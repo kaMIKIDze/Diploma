@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_purchase"
+            android:icon="@drawable/ic_purchase"
+            android:title="@string/purchase_title" />
+        <item
+            android:id="@+id/nav_category"
+            android:icon="@drawable/ic_category"
+            android:title="@string/category_title" />
+        <item
+            android:id="@+id/nav_analysis"
+            android:icon="@drawable/ic_analysis"
+            android:title="@string/analysis_title" />
+
+        <item android:title="@string/app_info_title">
+            <menu>
+                <item
+                android:id="@+id/nav_setting"
+                android:title="@string/setting_title" />
+                <item
+                    android:id="@+id/nav_info"
+                    android:title="@string/info_title" />
+            </menu>
+        </item>
+    </group>
+</menu>
