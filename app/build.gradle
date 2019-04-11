@@ -21,14 +21,22 @@ android {
     }
 }
 
+repositories {
+    maven {
+        url  "http://dl.bintray.com/lukaville/maven"
+    }
+}
+
 dependencies {
+
+
     implementation "com.android.support:appcompat-v7:$supportLibVersion"
     implementation "com.android.support:design:$supportLibVersion"
 
+    implementation 'com.github.clans:fab:1.6.4'
+    implementation 'com.nbsp:library:1.8'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test:runner:$test_runner_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$test_espresso_version"
