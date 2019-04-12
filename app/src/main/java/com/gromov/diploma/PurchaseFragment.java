@@ -15,11 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
 import java.util.Objects;
-
 
 import static android.app.Activity.RESULT_OK;
 
@@ -34,8 +35,6 @@ public class PurchaseFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
 
@@ -82,7 +81,12 @@ public class PurchaseFragment extends Fragment {
 
             if (path != null) {
                 Log.d("Path: ", path);
-                text.setText(path);
+
+                String fileText = String.valueOf(Utils.readText(path));
+
+                Gson gson = new Gson();
+                Purchase purchase = gson.fromJson(fileText, Purchase.class);
+                text.setText(purchase.showPurchase());
             }
         }
     }
