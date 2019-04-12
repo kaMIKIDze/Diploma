@@ -21,7 +21,6 @@ import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 import java.util.Objects;
 
 
-
 import static android.app.Activity.RESULT_OK;
 
 public class PurchaseFragment extends Fragment {
@@ -50,7 +49,7 @@ public class PurchaseFragment extends Fragment {
     }
 
     private void showError() {
-        //Toast.makeText(this, "Allow external storage reading", Toast.LENGTH_SHORT).show();
+        Log.d("Error: ", "Allow external storage reading");
     }
 
 
