@@ -2,11 +2,18 @@ package com.gromov.diploma;
 
 import java.util.ArrayList;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Purchase {
-    protected int category = 0;  // Выбор категории товаров в покупке (продукты, спорт и т.д.)
-    protected String retailPlaceAddress = null; // Наименование магазина
-    protected float ecashTotalSum = 0; //общая стоимость (высчитываем из товаров или задаем сами?)
-    protected ArrayList<Product> items; //Список покупок
+
+    @PrimaryKey(autoGenerate = true) private int id;
+    private int category = 0;  // Выбор категории товаров в покупке (продукты, спорт и т.д.)
+    @ColumnInfo(name = "placeAddress")private String retailPlaceAddress = null; // Наименование магазина
+    @ColumnInfo(name = "totalSum")private float ecashTotalSum = 0; //общая стоимость (высчитываем из товаров или задаем сами?)
+    private ArrayList<Product> items; //Список покупок
 
     public float getTotalCost() {
         return ecashTotalSum;

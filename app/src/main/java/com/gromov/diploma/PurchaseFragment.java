@@ -1,6 +1,7 @@
 package com.gromov.diploma;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -20,7 +21,11 @@ import com.google.gson.GsonBuilder;
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
+
+import androidx.room.Room;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -31,6 +36,11 @@ public class PurchaseFragment extends Fragment {
 
     com.github.clans.fab.FloatingActionButton load_file_btn, load_manually_btn;
     TextView text;
+
+
+    private PurchaseDao purchaseDao;
+    private DatabasePurchase db;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +67,9 @@ public class PurchaseFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.purchase_fragment, container, false);
 
+
+
+
         text = view.findViewById(R.id.id_purchase_text);
 
         load_file_btn = view.findViewById(R.id.load_file_check);
@@ -66,6 +79,8 @@ public class PurchaseFragment extends Fragment {
                 checkPermissionsAndOpenFilePicker();
             }
         });
+
+        createDb();
 
         load_manually_btn = view.findViewById(R.id.load_manually_check);
 
@@ -86,9 +101,22 @@ public class PurchaseFragment extends Fragment {
 
                 Gson gson = new Gson();
                 Purchase purchase = gson.fromJson(fileText, Purchase.class);
-                text.setText(purchase.showPurchase());
+
+                purchaseDao.insertAll(purchase);
+                Purchase byName = purchaseDao.findByCost("42400.0");
+                text.setText(byName.showPurchase());
             }
         }
+    }
+
+    public void createDb(){
+        Context context = getContext();
+        db = DatabasePurchase.getInstanse(context);
+        purchaseDao = db.purchaseDao();
+    }
+
+    public void closeDb() throws IOException {
+        db.close();
     }
 
 
