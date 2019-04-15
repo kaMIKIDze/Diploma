@@ -17,15 +17,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
-
-import androidx.room.Room;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -39,7 +35,8 @@ public class PurchaseFragment extends Fragment {
 
 
     private PurchaseDao purchaseDao;
-    private DatabasePurchase db;
+    private DatabasePurchase databasePurchase;
+    private ProductDao productDao;
 
 
     @Override
@@ -66,8 +63,6 @@ public class PurchaseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.purchase_fragment, container, false);
-
-
 
 
         text = view.findViewById(R.id.id_purchase_text);
@@ -102,21 +97,27 @@ public class PurchaseFragment extends Fragment {
                 Gson gson = new Gson();
                 Purchase purchase = gson.fromJson(fileText, Purchase.class);
 
-                purchaseDao.insertAll(purchase);
+
+                new AgentAsyncTask(productDao, purchaseDao, purchase, text).execute();
+               /* purchaseDao.insertAll(purchase);
                 Purchase byName = purchaseDao.findByCost("42400.0");
-                text.setText(byName.showPurchase());
+                text.setText(byName.showPurchase());*/
             }
         }
     }
 
-    public void createDb(){
+    public void createDb() {
         Context context = getContext();
-        db = DatabasePurchase.getInstanse(context);
-        purchaseDao = db.purchaseDao();
+        databasePurchase = DatabasePurchase.getInstanse(context);
+        purchaseDao = databasePurchase.purchaseDao();
+
+
+        productDao = databasePurchase.productDao();
     }
 
     public void closeDb() throws IOException {
-        db.close();
+        databasePurchase.close();
+
     }
 
 

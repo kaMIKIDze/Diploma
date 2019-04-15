@@ -1,22 +1,30 @@
 package com.gromov.diploma;
 
 
-import androidx.room.Entity;
-import androidx.room.ForeignKey;
-import androidx.room.PrimaryKey;
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.PrimaryKey;
 
-@Entity(foreignKeys = @ForeignKey(
-        entity = Purchase.class,
-        parentColumns = "id",
-        childColumns = "ownerId"))
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
+
+@Entity(tableName = "product",
+        foreignKeys = @ForeignKey(
+                entity = Purchase.class,
+                parentColumns = "id",
+                childColumns = "ownerId",
+                onDelete = CASCADE))
 public class Product {
 
-    @PrimaryKey(autoGenerate = true) private int id;
+    @PrimaryKey(autoGenerate = true)
+    public int id;
     private String name;
     private int sum;
     private double quantity;
 
-    private int ownerId;// this ID points to a Purchase
+    @ColumnInfo(name = "ownerId")
+    public long ownerId;// this ID points to a Purchase
 
 
     public String showProduct() {
@@ -24,5 +32,44 @@ public class Product {
         return string;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public double getQuantity() {
+        return quantity;
+    }
+
+    public long getOwnerId() {
+        return ownerId;
+    }
+
+    public int getSum() {
+        return sum;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setOwnerId(long ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setSum(int sum) {
+        this.sum = sum;
+    }
 
 }

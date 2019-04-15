@@ -1,16 +1,20 @@
 package com.gromov.diploma;
 
+import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
+import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.Query;
+
 import java.util.List;
 
-import androidx.room.Dao;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.Query;
 
 @Dao
 public interface PurchaseDao {
     @Query("SELECT * FROM purchase")
-    List<Purchase> getAll();
+    List<Purchase> getAllPurshase();
+
+    /*@Query("SELECT * FROM product")
+    List<Product> getAllProduct();*/
 
     @Query("SELECT * FROM purchase WHERE id IN (:userIds)")
     List<Purchase> loadAllByIds(int[] userIds);
@@ -19,7 +23,7 @@ public interface PurchaseDao {
     Purchase findByCost(String sum);
 
     @Insert
-    void insertAll(Purchase... purchase);
+    long insertAll(Purchase purchase);
 
     @Delete
     void delete(Purchase purchase);

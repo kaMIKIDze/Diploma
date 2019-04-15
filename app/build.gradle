@@ -23,7 +23,7 @@ android {
 
 repositories {
     maven {
-        url  "http://dl.bintray.com/lukaville/maven"
+        url "http://dl.bintray.com/lukaville/maven"
     }
 }
 
@@ -34,8 +34,8 @@ dependencies {
     implementation "com.android.support:design:$supportLibVersion"
     implementation 'com.google.code.gson:gson:2.8.5'
 
-
-    implementation "androidx.room:room-runtime:$room_version"
+    implementation "android.arch.persistence.room:runtime:1.1.1"
+    annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
 
     implementation 'com.github.clans:fab:1.6.4'
     implementation 'com.nbsp:library:1.8'
