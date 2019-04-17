@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
+import com.github.clans.fab.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -27,11 +28,11 @@ import static android.app.Activity.RESULT_OK;
 
 public class PurchaseFragment extends Fragment {
 
-    public static final int FILE_PICKER_REQUEST_CODE = 1;
-    public static final int PERMISSIONS_REQUEST_CODE = 0;
+    private static final int FILE_PICKER_REQUEST_CODE = 1;
+    private static final int PERMISSIONS_REQUEST_CODE = 0;
 
-    com.github.clans.fab.FloatingActionButton load_file_btn, load_manually_btn;
-    TextView text;
+    private FloatingActionButton loadFileBtn, loadManuallyBtn;
+    private TextView text;
 
 
     private PurchaseDao purchaseDao;
@@ -67,8 +68,8 @@ public class PurchaseFragment extends Fragment {
 
         text = view.findViewById(R.id.id_purchase_text);
 
-        load_file_btn = view.findViewById(R.id.load_file_check);
-        load_file_btn.setOnClickListener(new View.OnClickListener() {
+        loadFileBtn = view.findViewById(R.id.load_file_check);
+        loadFileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkPermissionsAndOpenFilePicker();
@@ -77,7 +78,7 @@ public class PurchaseFragment extends Fragment {
 
         createDb();
 
-        load_manually_btn = view.findViewById(R.id.load_manually_check);
+        loadManuallyBtn = view.findViewById(R.id.load_manually_check);
 
         return view;
     }
@@ -90,18 +91,12 @@ public class PurchaseFragment extends Fragment {
             String path = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
 
             if (path != null) {
-                Log.d("Path: ", path);
-
                 String fileText = String.valueOf(Utils.readText(path));
 
                 Gson gson = new Gson();
                 Purchase purchase = gson.fromJson(fileText, Purchase.class);
 
-
-                new AgentAsyncTask(productDao, purchaseDao, purchase, text).execute();
-               /* purchaseDao.insertAll(purchase);
-                Purchase byName = purchaseDao.findByCost("42400.0");
-                text.setText(byName.showPurchase());*/
+                new AgentAsyncTask(productDao, purchaseDao, purchase).execute();
             }
         }
     }
@@ -111,13 +106,11 @@ public class PurchaseFragment extends Fragment {
         databasePurchase = DatabasePurchase.getInstanse(context);
         purchaseDao = databasePurchase.purchaseDao();
 
-
         productDao = databasePurchase.productDao();
     }
 
     public void closeDb() throws IOException {
         databasePurchase.close();
-
     }
 
 

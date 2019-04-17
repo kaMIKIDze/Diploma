@@ -11,7 +11,7 @@ import java.util.ArrayList;
 @Entity
 public class Purchase {
 
-    @PrimaryKey (autoGenerate = true)
+    @PrimaryKey(autoGenerate = true)
     public int id;
     private int category = 0;  // Выбор категории товаров в покупке (продукты, спорт и т.д.)
     @ColumnInfo(name = "placeAddress")
@@ -28,14 +28,10 @@ public class Purchase {
         show += "Общая сумма покупки: " + (String.valueOf(this.getEcashTotalSum()) + "\n")
                 + "Магазин: " + this.getRetailPlaceAddress() + "\n"
                 + "Товары: " + "\n";
-        /*ArrayList arrayList = this.getProducts();
-        for (int i = 0; i < this.getProducts().size(); i++) {
-            show += "     " + (((Product) arrayList.get(i)).showProduct());
-        }*/
         return show;
     }
 
-    public void setOwnerIdItems(long id){
+    public void setOwnerIdItems(long id) {
         for (int i = 0; i < this.getItems().size(); i++)
             this.getItems().get(i).setOwnerId(id);
     }

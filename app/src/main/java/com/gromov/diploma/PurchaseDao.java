@@ -13,9 +13,6 @@ public interface PurchaseDao {
     @Query("SELECT * FROM purchase")
     List<Purchase> getAllPurshase();
 
-    /*@Query("SELECT * FROM product")
-    List<Product> getAllProduct();*/
-
     @Query("SELECT * FROM purchase WHERE id IN (:userIds)")
     List<Purchase> loadAllByIds(int[] userIds);
 
