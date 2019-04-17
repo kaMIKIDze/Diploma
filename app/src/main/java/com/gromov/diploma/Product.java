@@ -22,6 +22,7 @@ public class Product {
     private String name;
     private int sum;
     private double quantity;
+    private int category;  // Выбор категории товаров в покупке (продукты, спорт и т.д.)
 
     @ColumnInfo(name = "ownerId")
     public long ownerId;// this ID points to a Purchase
@@ -30,6 +31,14 @@ public class Product {
     public String showProduct() {
         String string = String.format("%-35.30s%s%10s%n", name, '|', sum);
         return string;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
+    }
+
+    public int getCategory() {
+        return category;
     }
 
     public void setId(int id) {

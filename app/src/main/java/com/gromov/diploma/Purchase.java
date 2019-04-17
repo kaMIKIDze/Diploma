@@ -13,7 +13,7 @@ public class Purchase {
 
     @PrimaryKey(autoGenerate = true)
     public int id;
-    private int category = 0;  // Выбор категории товаров в покупке (продукты, спорт и т.д.)
+
     @ColumnInfo(name = "placeAddress")
     private String retailPlaceAddress = null; // Наименование магазина
     @ColumnInfo(name = "totalSum")
@@ -22,7 +22,8 @@ public class Purchase {
     private ArrayList<Product> items; //Список покупок
 
 
-    public String showPurchase() {
+    @Override
+    public String toString() {
         String show = "";
 
         show += "Общая сумма покупки: " + (String.valueOf(this.getEcashTotalSum()) + "\n")
@@ -45,9 +46,6 @@ public class Purchase {
         return id;
     }
 
-    public int getCategory() {
-        return category;
-    }
 
     public ArrayList<Product> getItems() {
         return items;
@@ -57,9 +55,6 @@ public class Purchase {
         return retailPlaceAddress;
     }
 
-    public void setCategory(int category) {
-        this.category = category;
-    }
 
     public void setEcashTotalSum(float ecashTotalSum) {
         this.ecashTotalSum = ecashTotalSum;

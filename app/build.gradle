@@ -37,6 +37,8 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:$room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
 
+    implementation "com.facebook.stetho:stetho:$stetho_version"
+
     implementation "com.github.clans:fab:$fab_version"
     implementation "com.nbsp:library:$nbsp_version"
 
