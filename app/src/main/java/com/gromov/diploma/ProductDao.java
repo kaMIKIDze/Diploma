@@ -19,7 +19,7 @@ public interface ProductDao {
     List<Product> loadAllByOwnerIds(int[] Ids);
 
     @Query("SELECT * FROM product  WHERE sum LIKE :sum LIMIT 1")
-    Product findByCost(String sum);
+    Product findByCost(int sum);
 
     @Insert
     void insertAll(List<Product> products);

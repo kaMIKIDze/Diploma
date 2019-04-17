@@ -34,9 +34,9 @@ public class PurchaseFragment extends Fragment {
     private FloatingActionButton loadFileBtn, loadManuallyBtn;
     private TextView text;
 
-
-    private PurchaseDao purchaseDao;
     private DatabasePurchase databasePurchase;
+    private PurchaseDao purchaseDao;
+    private CategoryDao categoryDao;
     private ProductDao productDao;
 
 
@@ -96,7 +96,13 @@ public class PurchaseFragment extends Fragment {
                 Gson gson = new Gson();
                 Purchase purchase = gson.fromJson(fileText, Purchase.class);
 
-                new AgentAsyncTask(productDao, purchaseDao, purchase).execute();
+                Category category = new Category();
+                category.setId(0);
+                category.setName("Продукты");
+                category.setRequired(1);
+
+                new AddCategoryAsyncTask(category,categoryDao).execute();
+                new AgentAsyncTask(productDao, purchaseDao,purchase).execute();
             }
         }
     }
@@ -105,7 +111,7 @@ public class PurchaseFragment extends Fragment {
         Context context = getContext();
         databasePurchase = DatabasePurchase.getInstanse(context);
         purchaseDao = databasePurchase.purchaseDao();
-
+        categoryDao = databasePurchase.categoryDao();
         productDao = databasePurchase.productDao();
     }
 

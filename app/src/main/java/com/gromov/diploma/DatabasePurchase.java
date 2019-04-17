@@ -6,10 +6,11 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 
-@Database(entities = {Purchase.class,Product.class}, version = 1)
+@Database(entities = {Purchase.class,Product.class,Category.class}, version = 1)
 public abstract class DatabasePurchase extends RoomDatabase {
     public abstract PurchaseDao purchaseDao();
     public abstract ProductDao productDao();
+    public abstract CategoryDao categoryDao();
 
     private static DatabasePurchase bd;
 

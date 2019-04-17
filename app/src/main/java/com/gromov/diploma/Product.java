@@ -10,11 +10,16 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 
 @Entity(tableName = "product",
-        foreignKeys = @ForeignKey(
-                entity = Purchase.class,
-                parentColumns = "id",
-                childColumns = "ownerId",
-                onDelete = CASCADE))
+        foreignKeys = {
+                @ForeignKey(
+                        entity = Purchase.class,
+                        parentColumns = "id",
+                        childColumns = "ownerId",
+                        onDelete = CASCADE),
+                @ForeignKey(entity = Category.class,
+                        parentColumns = "id",
+                        childColumns = "categoryId")//Что будет происходить при удалении категории из БД?
+        })
 public class Product {
 
     @PrimaryKey(autoGenerate = true)
@@ -22,7 +27,7 @@ public class Product {
     private String name;
     private int sum;
     private double quantity;
-    private int category;  // Выбор категории товаров в покупке (продукты, спорт и т.д.)
+    private int categoryId = 1;  // Выбор категории товаров в покупке (продукты, спорт и т.д.)
 
     @ColumnInfo(name = "ownerId")
     public long ownerId;// this ID points to a Purchase
@@ -33,12 +38,12 @@ public class Product {
         return string;
     }
 
-    public void setCategory(int category) {
-        this.category = category;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public int getCategory() {
-        return category;
+    public int getCategoryId() {
+        return categoryId;
     }
 
     public void setId(int id) {

@@ -17,7 +17,7 @@ public interface PurchaseDao {
     List<Purchase> loadAllByIds(int[] userIds);
 
     @Query("SELECT * FROM purchase  WHERE totalSum LIKE :sum LIMIT 1")
-    Purchase findByCost(String sum);
+    Purchase findByCost(int sum);
 
     @Insert
     long insertAll(Purchase purchase);
