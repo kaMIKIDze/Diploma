@@ -1,11 +1,13 @@
-package com.gromov.diploma;
+package com.gromov.diploma.data.database.entities;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
-import java.util.ArrayList;
+import com.gromov.diploma.data.database.entities.Product;
+
+import java.util.List;
 
 
 @Entity
@@ -19,7 +21,7 @@ public class Purchase {
     @ColumnInfo(name = "totalSum")
     private float ecashTotalSum = 0; //общая стоимость (высчитываем из товаров или задаем сами?)
     @Ignore
-    private ArrayList<Product> items; //Список покупок
+    private List<Product> items; //Список покупок
 
 
     @Override
@@ -47,7 +49,7 @@ public class Purchase {
     }
 
 
-    public ArrayList<Product> getItems() {
+    public List<Product> getItems() {
         return items;
     }
 
@@ -64,7 +66,7 @@ public class Purchase {
         this.id = id;
     }
 
-    public void setItems(ArrayList<Product> items) {
+    public void setItems(List<Product> items) {
         this.items = items;
     }
 

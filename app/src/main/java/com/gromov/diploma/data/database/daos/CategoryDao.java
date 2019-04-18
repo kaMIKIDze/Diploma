@@ -1,9 +1,11 @@
-package com.gromov.diploma;
+package com.gromov.diploma.data.database.daos;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+
+import com.gromov.diploma.data.database.entities.Category;
 
 import java.util.List;
 

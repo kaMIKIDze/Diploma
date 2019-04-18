@@ -1,4 +1,4 @@
-package com.gromov.diploma;
+package com.gromov.diploma.data.database.entities;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;

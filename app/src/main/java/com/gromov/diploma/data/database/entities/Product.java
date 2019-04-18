@@ -1,4 +1,4 @@
-package com.gromov.diploma;
+package com.gromov.diploma.data.database.entities;
 
 
 import android.arch.persistence.room.ColumnInfo;
@@ -35,7 +35,7 @@ public class Product {
 
     @Override
     public String toString() {
-        String string = String.format("%-35.30s%s%10s%n", name, '|', sum);
+        String string = String.format("%-35.30s%10s%n", name, sum);
         return string;
     }
 

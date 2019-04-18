@@ -1,4 +1,4 @@
-package com.gromov.diploma;
+package com.gromov.diploma.view.products;
 
 import android.Manifest;
 import android.content.Context;
@@ -10,19 +10,30 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.github.clans.fab.FloatingActionButton;
 import com.google.gson.Gson;
+import com.gromov.diploma.R;
+import com.gromov.diploma.data.storage.FileSystem;
+import com.gromov.diploma.data.async.AddCategoryAsyncTask;
+import com.gromov.diploma.data.async.AgentAsyncTask;
+import com.gromov.diploma.data.async.GetPurchaseAsyncTask;
+import com.gromov.diploma.data.database.database.DatabasePurchase;
+import com.gromov.diploma.data.database.entities.Category;
+import com.gromov.diploma.data.database.entities.Purchase;
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
-import com.github.clans.fab.FloatingActionButton;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -31,13 +42,12 @@ public class PurchaseFragment extends Fragment {
     private static final int FILE_PICKER_REQUEST_CODE = 1;
     private static final int PERMISSIONS_REQUEST_CODE = 0;
 
-    private FloatingActionButton loadFileBtn, loadManuallyBtn;
-    private TextView text;
-
+    private FloatingActionButton loadFileBtn;
     private DatabasePurchase databasePurchase;
-    private PurchaseDao purchaseDao;
-    private CategoryDao categoryDao;
-    private ProductDao productDao;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private List<Purchase> purchases;
 
 
     @Override
@@ -66,9 +76,7 @@ public class PurchaseFragment extends Fragment {
         View view = inflater.inflate(R.layout.purchase_fragment, container, false);
 
 
-        text = view.findViewById(R.id.id_purchase_text);
-
-        loadFileBtn = view.findViewById(R.id.load_file_check);
+        loadFileBtn = view.findViewById(R.id.fab);
         loadFileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,8 +85,25 @@ public class PurchaseFragment extends Fragment {
         });
 
         createDb();
+        GetPurchaseAsyncTask getPurchaseAsyncTask = new GetPurchaseAsyncTask(databasePurchase);
+        getPurchaseAsyncTask.execute();
+        try {
+            purchases = getPurchaseAsyncTask.get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        loadManuallyBtn = view.findViewById(R.id.load_manually_check);
+
+        recyclerView = view.findViewById(R.id.recycler_view);
+        layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        mAdapter = new ProductsAdapter(purchases);
+        recyclerView.setAdapter(mAdapter);
+
+
+
 
         return view;
     }
@@ -91,7 +116,7 @@ public class PurchaseFragment extends Fragment {
             String path = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
 
             if (path != null) {
-                String fileText = String.valueOf(Utils.readText(path));
+                String fileText = String.valueOf(FileSystem.readText(path));
 
                 Gson gson = new Gson();
                 Purchase purchase = gson.fromJson(fileText, Purchase.class);
@@ -101,7 +126,8 @@ public class PurchaseFragment extends Fragment {
                 category.setName("Продукты");
                 category.setRequired(1);
 
-                new AddCategoryAsyncTask(category,databasePurchase).execute();
+
+                new AddCategoryAsyncTask(category, databasePurchase).execute();
                 new AgentAsyncTask(databasePurchase, purchase).execute();
             }
         }
@@ -110,9 +136,6 @@ public class PurchaseFragment extends Fragment {
     public void createDb() {
         Context context = getContext();
         databasePurchase = DatabasePurchase.getInstanse(context);
-        purchaseDao = databasePurchase.purchaseDao();
-        categoryDao = databasePurchase.categoryDao();
-        productDao = databasePurchase.productDao();
     }
 
     public void closeDb() throws IOException {

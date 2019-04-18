@@ -1,4 +1,4 @@
-package com.gromov.diploma;
+package com.gromov.diploma.data.storage;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Utils {
+public class FileSystem {
     public static StringBuilder readText(String fileName) {
 
         StringBuilder stringBuilder = null;

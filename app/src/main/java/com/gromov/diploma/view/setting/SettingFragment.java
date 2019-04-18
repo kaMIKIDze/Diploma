@@ -1,4 +1,4 @@
-package com.gromov.diploma;
+package com.gromov.diploma.view.setting;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,8 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
-
+import com.gromov.diploma.R;
 
 
 public class SettingFragment extends Fragment {

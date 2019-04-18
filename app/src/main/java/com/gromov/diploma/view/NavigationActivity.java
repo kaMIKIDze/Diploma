@@ -1,4 +1,4 @@
-package com.gromov.diploma;
+package com.gromov.diploma.view;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +8,13 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+
+import com.gromov.diploma.R;
+import com.gromov.diploma.view.analysis.AnalysisFragment;
+import com.gromov.diploma.view.category.CategoryFragment;
+import com.gromov.diploma.view.info.InfoFragment;
+import com.gromov.diploma.view.products.PurchaseFragment;
+import com.gromov.diploma.view.setting.SettingFragment;
 
 
 public class NavigationActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
