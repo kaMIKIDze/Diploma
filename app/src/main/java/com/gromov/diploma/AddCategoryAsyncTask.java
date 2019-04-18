@@ -7,9 +7,9 @@ public class AddCategoryAsyncTask extends AsyncTask {
     private CategoryDao categoryDao;
     private Category category;
 
-    AddCategoryAsyncTask(Category category, CategoryDao categoryDao) {
+    AddCategoryAsyncTask(Category category, DatabasePurchase databasePurchase) {
         this.category = category;
-        this.categoryDao = categoryDao;
+        this.categoryDao = databasePurchase.categoryDao();
     }
 
     @Override

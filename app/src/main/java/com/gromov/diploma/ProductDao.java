@@ -18,9 +18,6 @@ public interface ProductDao {
     @Query("SELECT * FROM product WHERE ownerId IN (:Ids)")
     List<Product> loadAllByOwnerIds(int[] Ids);
 
-    @Query("SELECT * FROM product  WHERE sum LIKE :sum LIMIT 1")
-    Product findByCost(int sum);
-
     @Insert
     void insertAll(List<Product> products);
 

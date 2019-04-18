@@ -101,8 +101,8 @@ public class PurchaseFragment extends Fragment {
                 category.setName("Продукты");
                 category.setRequired(1);
 
-                new AddCategoryAsyncTask(category,categoryDao).execute();
-                new AgentAsyncTask(productDao, purchaseDao,purchase).execute();
+                new AddCategoryAsyncTask(category,databasePurchase).execute();
+                new AgentAsyncTask(databasePurchase, purchase).execute();
             }
         }
     }

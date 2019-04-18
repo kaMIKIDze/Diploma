@@ -33,7 +33,8 @@ public class Product {
     public long ownerId;// this ID points to a Purchase
 
 
-    public String showProduct() {
+    @Override
+    public String toString() {
         String string = String.format("%-35.30s%s%10s%n", name, '|', sum);
         return string;
     }
