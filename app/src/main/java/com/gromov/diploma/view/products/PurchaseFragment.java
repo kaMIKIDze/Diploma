@@ -103,8 +103,6 @@ public class PurchaseFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
 
 
-
-
         return view;
     }
 
@@ -122,10 +120,6 @@ public class PurchaseFragment extends Fragment {
                 Purchase purchase = gson.fromJson(fileText, Purchase.class);
 
                 Category category = new Category();
-                category.setId(0);
-                category.setName("Продукты");
-                category.setRequired(1);
-
 
                 new AddCategoryAsyncTask(category, databasePurchase).execute();
                 new AgentAsyncTask(databasePurchase, purchase).execute();

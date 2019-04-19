@@ -12,13 +12,13 @@ import java.util.List;
 @Dao
 public interface CategoryDao {
     @Query("SELECT * FROM category")
-    List<Category> getAllProduct();
-
-    @Query("SELECT * FROM category WHERE id IN (:userIds)")
-    List<Category> loadAllByIds(int[] userIds);
+    List<Category> getAllCategory();
 
     @Query("SELECT * FROM category  WHERE name LIKE :name LIMIT 1")
     Category findByCost(String name);
+
+    @Query("SELECT * FROM category WHERE id IN (:userId)")
+    Category findById(int userId);
 
     @Insert
     void insertAll(Category category);

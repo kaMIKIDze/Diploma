@@ -6,6 +6,7 @@ import com.gromov.diploma.data.database.daos.CategoryDao;
 import com.gromov.diploma.data.database.daos.ProductDao;
 import com.gromov.diploma.data.database.daos.PurchaseDao;
 import com.gromov.diploma.data.database.database.DatabasePurchase;
+import com.gromov.diploma.data.database.entities.Category;
 import com.gromov.diploma.data.database.entities.Product;
 import com.gromov.diploma.data.database.entities.Purchase;
 
@@ -16,6 +17,7 @@ public class GetPurchaseAsyncTask extends AsyncTask<Void, Void, List<Purchase>> 
     private CategoryDao categoryDao;
     private PurchaseDao purchaseDao;
     private List<Purchase> purchases;
+    private List<Category> categories;
 
 
     public GetPurchaseAsyncTask(DatabasePurchase databasePurchase) {
@@ -28,8 +30,12 @@ public class GetPurchaseAsyncTask extends AsyncTask<Void, Void, List<Purchase>> 
     @Override
     protected List<Purchase> doInBackground(Void... voids) {
         purchases = purchaseDao.getAllPurshase();
+        categories = categoryDao.getAllCategory();
         for (int i = 0; i < purchases.size(); i++) {
             List<Product> products = productDao.loadAllByOwnerIds(purchases.get(i).getId());
+            for (int j =0;j<products.size();j++){
+                products.get(j).setCategory(categories.get(products.get(j).getCategoryId()-1));
+            }
             purchases.get(i).setItems(products);
         }
         return purchases;

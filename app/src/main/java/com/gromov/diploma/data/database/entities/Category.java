@@ -12,6 +12,12 @@ public class Category {
     private int required;
 
 
+    public Category(){
+        id = 1;
+        name = "неизвестно";
+        required = 0;
+    }
+
     public int getRequired() {
         return required;
     }
