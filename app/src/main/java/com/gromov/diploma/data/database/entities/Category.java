@@ -12,10 +12,15 @@ public class Category {
     private int required;
 
 
-    public Category(){
+    public Category() {
         id = 1;
         name = "неизвестно";
         required = 0;
+    }
+
+    public Category(String name, int required) {
+        this.name = name;
+        this.required = required;
     }
 
     public int getRequired() {
