@@ -1,6 +1,7 @@
 package com.gromov.diploma.view.category;
 
 import android.app.Activity;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,7 +13,7 @@ import com.gromov.diploma.data.async.AddCategoryAsyncTask;
 import com.gromov.diploma.data.database.database.DatabasePurchase;
 import com.gromov.diploma.data.database.entities.Category;
 
-public class CreateCategory extends Activity {
+public class CreateCategoryActivity extends Activity {
 
     private Button saveBtn;
     private EditText nameCategory;
@@ -40,6 +41,7 @@ public class CreateCategory extends Activity {
                 else q = 0;
                 Category category = new Category(name, q);
                 new AddCategoryAsyncTask(category, databasePurchase).execute();
+                finish();
             }
         });
     }
@@ -48,6 +50,4 @@ public class CreateCategory extends Activity {
     public void createDb() {
         databasePurchase = DatabasePurchase.getInstanse(this);
     }
-
-
 }

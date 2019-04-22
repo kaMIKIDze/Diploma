@@ -33,6 +33,9 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
 
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        //задаем корневой фрагмент
+        displaySelectedFragment(new PurchaseFragment());
+
 
     }
 
@@ -40,6 +43,7 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
+
         } else super.onBackPressed();
     }
 

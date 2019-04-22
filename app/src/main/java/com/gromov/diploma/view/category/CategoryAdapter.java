@@ -27,11 +27,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             categoryText = view.findViewById(R.id.text_card_category);
 
         }
+
     }
+
 
     @Override
     public CategoryAdapter.CategoryViewHolder onCreateViewHolder(ViewGroup parent,
-                                                 int viewType) {
+                                                                 int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_category, parent, false);
@@ -44,8 +46,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         String nameCategory;
         Category category = categories.get(i);
-        nameCategory=category.getName();
+        nameCategory = category.getName();
         myViewHolder.categoryText.setText(nameCategory);
+
 
     }
 
@@ -54,6 +57,19 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         return categories.size();
     }
 
+    public void removeItem(int position) {
+        categories.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public List<Category> getData() {
+        return categories;
+    }
+
+   public void restoreItem(Category item, int position) {
+        categories.add(position,item);
+        notifyItemInserted(position);
+    }
 
 }
 
