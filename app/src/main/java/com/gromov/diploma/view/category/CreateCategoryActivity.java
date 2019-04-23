@@ -1,7 +1,6 @@
 package com.gromov.diploma.view.category;
 
 import android.app.Activity;
-import android.content.IntentSender;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;

@@ -47,7 +47,6 @@ public class CategoryFragment extends Fragment {
         createViews();
         getCategories();
 
-
         return view;
     }
 
@@ -64,12 +63,10 @@ public class CategoryFragment extends Fragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
-
                 final int position = viewHolder.getAdapterPosition();
                 final Category item = categoryAdapter.getData().get(position);
 
                 categoryAdapter.removeItem(position);
-
 
                 Snackbar snackbar = Snackbar
                         .make(coordinatorLayout, "Item was removed from the list.", Snackbar.LENGTH_LONG);
@@ -84,11 +81,8 @@ public class CategoryFragment extends Fragment {
                 snackbar.setAction("UNDO", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                         categoryAdapter.restoreItem(item, position);
                         recyclerView.scrollToPosition(position);
-
-
                     }
                 });
 

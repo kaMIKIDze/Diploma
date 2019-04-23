@@ -32,4 +32,8 @@
     <string name="first_radio_text">Обязательные</string>
     <string name="second_radio_text">Необязательные</string>
     <string name="save_text">Сохранить</string>
+    <string name="place_name_text">Название магазина</string>
+    <string name="category_text">Категория товара:</string>
+    <string name="addProduct">Добавить</string>
+    <string name="products">Товары:</string>
 </resources>

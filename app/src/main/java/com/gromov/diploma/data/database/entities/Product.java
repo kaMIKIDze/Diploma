@@ -35,6 +35,11 @@ public class Product {
     @ColumnInfo(name = "ownerId")
     public long ownerId;// this ID points to a Purchase
 
+    public Product(String name, int sum, double quantity){
+        this.name = name;
+        this.sum = sum;
+        this.quantity = quantity;
+    }
 
     @Override
     public String toString() {

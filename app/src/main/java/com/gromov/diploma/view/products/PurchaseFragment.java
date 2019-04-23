@@ -27,6 +27,7 @@ import com.gromov.diploma.data.database.database.DatabasePurchase;
 import com.gromov.diploma.data.database.entities.Category;
 import com.gromov.diploma.data.database.entities.Purchase;
 import com.gromov.diploma.data.storage.FileSystem;
+import com.gromov.diploma.view.category.CreateCategoryActivity;
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
@@ -80,7 +81,8 @@ public class PurchaseFragment extends Fragment {
         loadFileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkPermissionsAndOpenFilePicker();
+                //checkPermissionsAndOpenFilePicker();
+                startActivity(new Intent(getActivity(), CreatePurchaseActivity.class));
             }
         });
 

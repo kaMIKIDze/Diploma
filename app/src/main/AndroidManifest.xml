@@ -16,6 +16,8 @@
         <activity android:name=".view.category.CreateCategoryActivity"
             android:label="Haha">
         </activity>
+        <activity android:name=".view.products.CreatePurchaseActivity">
+        </activity>
         <activity android:name=".view.NavigationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
