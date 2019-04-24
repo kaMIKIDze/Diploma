@@ -20,14 +20,11 @@ import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 import com.gromov.diploma.R;
-import com.gromov.diploma.data.async.AddCategoryAsyncTask;
-import com.gromov.diploma.data.async.AgentAsyncTask;
+import com.gromov.diploma.data.async.AddPurchaseAsyncTask;
 import com.gromov.diploma.data.async.GetPurchaseAsyncTask;
 import com.gromov.diploma.data.database.database.DatabasePurchase;
-import com.gromov.diploma.data.database.entities.Category;
 import com.gromov.diploma.data.database.entities.Purchase;
 import com.gromov.diploma.data.storage.FileSystem;
-import com.gromov.diploma.view.category.CreateCategoryActivity;
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
@@ -101,7 +98,7 @@ public class PurchaseFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new ProductsAdapter(purchases);
+        mAdapter = new PurchaseAdapter(purchases);
         recyclerView.setAdapter(mAdapter);
 
 
@@ -122,7 +119,7 @@ public class PurchaseFragment extends Fragment {
                 Purchase purchase = gson.fromJson(fileText, Purchase.class);
 
 
-                new AgentAsyncTask(databasePurchase, purchase).execute();
+                new AddPurchaseAsyncTask(databasePurchase, purchase).execute();
             }
         }
     }

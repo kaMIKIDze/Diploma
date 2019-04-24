@@ -7,13 +7,13 @@ import com.gromov.diploma.data.database.daos.PurchaseDao;
 import com.gromov.diploma.data.database.database.DatabasePurchase;
 import com.gromov.diploma.data.database.entities.Purchase;
 
-public class AgentAsyncTask extends AsyncTask {
+public class AddPurchaseAsyncTask extends AsyncTask {
 
     private PurchaseDao purchaseDao;
     private Purchase purchase;
     private ProductDao productDao;
 
-    public AgentAsyncTask(DatabasePurchase databasePurchase, Purchase purchase) {
+    public AddPurchaseAsyncTask(DatabasePurchase databasePurchase, Purchase purchase) {
         this.purchase = purchase;
         this.purchaseDao = databasePurchase.purchaseDao();
         this.productDao = databasePurchase.productDao();

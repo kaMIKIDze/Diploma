@@ -7,6 +7,8 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.gromov.diploma.view.products.ProductInfo;
+
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 
@@ -39,6 +41,14 @@ public class Product {
         this.name = name;
         this.sum = sum;
         this.quantity = quantity;
+    }
+
+    public Product(ProductInfo productInfo){
+        this.name = productInfo.getName();
+        this.quantity = productInfo.getCount();
+        this.category = new Category(productInfo.getCategoryName(),1);
+        this.categoryId = productInfo.getCategoryId();
+        this.sum = (int) (productInfo.getCost()*100*quantity);
     }
 
     @Override

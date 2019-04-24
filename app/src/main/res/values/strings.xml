@@ -36,4 +36,9 @@
     <string name="category_text">Категория товара:</string>
     <string name="addProduct">Добавить</string>
     <string name="products">Товары:</string>
+    <string name="product_name">Название продукта</string>
+    <string name="count_product">Количество:</string>
+    <string name="cost_product">Цена за ед. товара:</string>
+    <string name="product_total_sum">Итоговая сумма:</string>
+    <string name="purchase_total_sum">Итого:</string>
 </resources>

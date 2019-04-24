@@ -51,17 +51,18 @@ public class CreatePurchaseAdapter extends RecyclerView.Adapter<CreatePurchaseAd
 
         Product product = products.get(pos);
         myViewHolder.name.setText(product.getName());
-        String getSum = String.format("%.1f р.",product.getSum()/100.0);
+        String getSum = String.format("%.1f р.", product.getSum() / 100.0);
         myViewHolder.totalSum.setText(getSum);
         myViewHolder.category.setText(product.getCategory().getName());
-        String sumAndQuan = String.format("%.1f x %.1f",((product.getSum()/product.getQuantity())/100.0) ,product.getQuantity());
+        String sumAndQuan = String.format("%.1f x %.1f", ((product.getSum() / product.getQuantity()) / 100.0), product.getQuantity());
         myViewHolder.sumAndQuantity.setText(sumAndQuan);
     }
 
 
     @Override
     public int getItemCount() {
-        return products.size();
+
+            return products.size();
     }
 
 

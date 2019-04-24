@@ -12,11 +12,11 @@ import com.gromov.diploma.data.database.entities.Purchase;
 
 import java.util.List;
 
-public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyViewHolder> {
+public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.MyViewHolder> {
 
     private List<Purchase> purchases;
 
-   public ProductsAdapter(List<Purchase> purchases) {
+   public PurchaseAdapter(List<Purchase> purchases) {
         this.purchases = purchases;
     }
 
@@ -40,7 +40,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
 
 
     @Override
-    public ProductsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
+    public PurchaseAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
                                                            int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
