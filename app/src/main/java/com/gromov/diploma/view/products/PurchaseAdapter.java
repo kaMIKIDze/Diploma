@@ -16,7 +16,7 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.MyView
 
     private List<Purchase> purchases;
 
-   public PurchaseAdapter(List<Purchase> purchases) {
+    public PurchaseAdapter(List<Purchase> purchases) {
         this.purchases = purchases;
     }
 
@@ -56,11 +56,11 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.MyView
         String itemsPrice = new String("");
         Purchase purchase = purchases.get(pos);
         myViewHolder.textViewName.setText(purchase.getRetailPlaceAddress());
-        myViewHolder.textViewSum.setText("Итого: " + String.valueOf(purchase.getEcashTotalSum()/100));
-        for (int i =0;i<purchase.getItems().size();i++){
-            itemsName+=purchase.getItems().get(i).getName();
-            itemsQuantity+=String.valueOf(purchase.getItems().get(i).getQuantity()+"\n");
-            itemsPrice+=String.valueOf(purchase.getItems().get(i).getSum()/100.0)+" р."+"\n";
+        myViewHolder.textViewSum.setText("Итого: " + String.valueOf(purchase.getEcashTotalSum() / 100));
+        for (int i = 0; i < purchase.getItems().size(); i++) {
+            itemsName += purchase.getItems().get(i).getName() + "\n";
+            itemsQuantity += String.valueOf(purchase.getItems().get(i).getQuantity() + "\n");
+            itemsPrice += String.valueOf(purchase.getItems().get(i).getSum() / 100.0) + " р." + "\n";
         }
         myViewHolder.textViewNameItems.setText(itemsName);
         myViewHolder.textViewQuantityItems.setText(String.valueOf(itemsQuantity));

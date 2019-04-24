@@ -84,6 +84,16 @@ public class PurchaseFragment extends Fragment {
         });
 
         createDb();
+
+        recyclerView = view.findViewById(R.id.recycler_view);
+
+        getPurchase();
+
+
+        return view;
+    }
+
+    public void getPurchase() {
         GetPurchaseAsyncTask getPurchaseAsyncTask = new GetPurchaseAsyncTask(databasePurchase);
         getPurchaseAsyncTask.execute();
         try {
@@ -93,16 +103,10 @@ public class PurchaseFragment extends Fragment {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-
-        recyclerView = view.findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new PurchaseAdapter(purchases);
         recyclerView.setAdapter(mAdapter);
-
-
-        return view;
     }
 
     @Override
@@ -148,6 +152,12 @@ public class PurchaseFragment extends Fragment {
         }
     }
 
+
+    @Override
+    public void onStart() {
+        getPurchase();
+        super.onStart();
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,

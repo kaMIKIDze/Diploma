@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.AppCompatTextView;
@@ -14,10 +15,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.gromov.diploma.R;
+import com.gromov.diploma.data.async.AddPurchaseAsyncTask;
 import com.gromov.diploma.data.async.GetCategoryAsyncTask;
 import com.gromov.diploma.data.database.database.DatabasePurchase;
 import com.gromov.diploma.data.database.entities.Category;
@@ -31,7 +32,7 @@ import java.util.concurrent.ExecutionException;
 public class CreatePurchaseActivity extends AppCompatActivity {
 
     private String[] categoriesNames;
-    private EditText place_name;
+    private TextInputEditText placeName;
     private List<Category> categories;
     private List<Product> products;
     private DatabasePurchase databasePurchase;
@@ -56,9 +57,11 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         products = new ArrayList<>();
 
+        placeName = findViewById(R.id.place_name);
+
         purchaseTotalSum = findViewById(R.id.purchase_total_sum);
 
-        spinnerCategory = (AppCompatSpinner) findViewById(R.id.spinnerCategory);
+        spinnerCategory = findViewById(R.id.spinnerCategory);
 
         try {
             categories = new GetCategoryAsyncTask(databasePurchase).execute().get();
@@ -76,7 +79,6 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         spinnerCategory.setSelection(1);
 
 
-        //products = test();
         recyclerView = findViewById(R.id.recycler_view_purchase);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -101,10 +103,10 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         ProductInfo productInfo = data.getParcelableExtra("product");
         Product product = new Product(productInfo);
         products.add(product);
-        for (int i =0;i<products.size();i++){
+        for (int i = 0; i < products.size(); i++) {
             totalSum += products.get(i).getSum();
         }
-        purchaseTotalSum.setText(String.valueOf(totalSum/100.0));
+        purchaseTotalSum.setText(String.valueOf(totalSum / 100.0));
     }
 
     @Override
@@ -118,13 +120,15 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.save_purchase:
                 purchase = new Purchase();
-                if (String.valueOf(place_name.getText()).isEmpty())
+                if (String.valueOf(placeName.getText()).isEmpty())
                     Toast.makeText(CreatePurchaseActivity.this, "you must enter a value to converted",
                             Toast.LENGTH_SHORT).show();
                 else
-                    purchase.setRetailPlaceAddress(String.valueOf(place_name.getText()));
+                    purchase.setRetailPlaceAddress(String.valueOf(placeName.getText()));
                 purchase.setItems(products);
-                
+                purchase.setEcashTotalSum((float) totalSum);
+                new AddPurchaseAsyncTask(databasePurchase, purchase).execute();
+                finish();
 
         }
         return super.onOptionsItemSelected(item);
@@ -139,15 +143,6 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         }
 
         return str;
-    }
-
-    public List<Product> test() {
-        List<Product> list = new ArrayList<>();
-        Product product1 = new Product("Хлеб", 2530, 2.0);
-        Product product2 = new Product("Мясо", 34000, 0.45);
-        list.add(product1);
-        list.add(product2);
-        return list;
     }
 
 
