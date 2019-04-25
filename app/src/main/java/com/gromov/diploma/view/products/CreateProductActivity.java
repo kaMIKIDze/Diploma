@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.gromov.diploma.R;
 import com.gromov.diploma.data.async.GetCategoryAsyncTask;
@@ -120,6 +121,22 @@ public class CreateProductActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save_product:
+                if (String.valueOf(productName.getText()).isEmpty()) {
+                    Toast.makeText(CreateProductActivity.this, "you must enter a product name",
+                            Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                if (String.valueOf(costProduct.getText()).isEmpty()) {
+                    Toast.makeText(CreateProductActivity.this, "you must enter a product cost",
+                            Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                if (String.valueOf(countProduct.getText()).isEmpty()) {
+                    Toast.makeText(CreateProductActivity.this, "you must enter a product count",
+                            Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+
                 productInfo = new ProductInfo(String.valueOf(productName.getText()),
                         (int) category.getSelectedItemId(),
                         categories.get((int) category.getSelectedItemId()).getName(),

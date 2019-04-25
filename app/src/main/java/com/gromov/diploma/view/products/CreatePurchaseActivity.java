@@ -36,7 +36,6 @@ import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
@@ -204,7 +203,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
                 showError();
             } else {
-                ActivityCompat.requestPermissions(Objects.requireNonNull(this), new String[]{permission}, PERMISSIONS_REQUEST_CODE);
+                ActivityCompat.requestPermissions(this, new String[]{permission}, PERMISSIONS_REQUEST_CODE);
             }
         } else {
             openFilePicker();

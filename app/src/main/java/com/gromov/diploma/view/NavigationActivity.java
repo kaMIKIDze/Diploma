@@ -33,7 +33,7 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
 
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        //задаем корневой фрагмент
+
         displaySelectedFragment(new PurchaseFragment());
 
 

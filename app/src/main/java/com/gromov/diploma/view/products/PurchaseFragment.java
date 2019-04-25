@@ -58,7 +58,6 @@ public class PurchaseFragment extends Fragment {
 
         getPurchase();
 
-
         return view;
     }
 
@@ -82,7 +81,6 @@ public class PurchaseFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
     }
 
     public void createDb() {
@@ -100,6 +98,5 @@ public class PurchaseFragment extends Fragment {
         getPurchase();
         super.onStart();
     }
-
 
 }

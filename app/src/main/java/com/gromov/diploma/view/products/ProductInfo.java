@@ -53,8 +53,6 @@ public class ProductInfo implements Parcelable {
         parcel.writeString(categoryName);
         parcel.writeDouble(count);
         parcel.writeDouble(cost);
-
-
     }
 
     public int getCategoryId() {
