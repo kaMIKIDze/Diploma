@@ -2,6 +2,7 @@ package com.gromov.diploma.view.products;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,12 @@ import java.util.List;
 public class CreatePurchaseAdapter extends RecyclerView.Adapter<CreatePurchaseAdapter.MyViewHolder> {
 
     private List<Product> products;
+    private PurchaseAdapterClickListener listener;
 
-    public CreatePurchaseAdapter(List<Product> products) {
+
+    public CreatePurchaseAdapter(List<Product> products, PurchaseAdapterClickListener listener) {
         this.products = products;
+        this.listener = listener;
     }
 
 
@@ -47,8 +51,16 @@ public class CreatePurchaseAdapter extends RecyclerView.Adapter<CreatePurchaseAd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int pos) {
+    public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, final int pos) {
 
+        myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Product product = products.get(pos);
+                Log.i("A", String.valueOf(pos));
+                listener.onItemClick(products.get(pos),pos);
+            }
+        });
         Product product = products.get(pos);
         myViewHolder.name.setText(product.getName());
         String getSum = String.format("%.1f р.", product.getSum() / 100.0);
@@ -62,7 +74,7 @@ public class CreatePurchaseAdapter extends RecyclerView.Adapter<CreatePurchaseAd
     @Override
     public int getItemCount() {
 
-            return products.size();
+        return products.size();
     }
 
 

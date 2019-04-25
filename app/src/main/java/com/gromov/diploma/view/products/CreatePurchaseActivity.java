@@ -61,6 +61,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
     private Purchase purchase;
     private AppCompatTextView purchaseTotalSum;
     private double totalSum;
+    private int position;
 
 
     @Override
@@ -96,8 +97,18 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view_purchase);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new CreatePurchaseAdapter(products);
+        mAdapter = new CreatePurchaseAdapter(products, new PurchaseAdapterClickListener() {
+            @Override
+            public void onItemClick(Product item, int pos) {
+                position = pos;
+                Intent i = new Intent(CreatePurchaseActivity.this, EditProductActivity.class);
+                ProductInfo productInfo = new ProductInfo(item);
+                i.putExtra("product", productInfo);
+                startActivityForResult(i, REQUEST_CODE_EDIT);
+            }
+        });
         recyclerView.setAdapter(mAdapter);
+        recyclerView.setNestedScrollingEnabled(true);
 
         addProduct = findViewById(R.id.create_purchase_fab);
         addProduct.setOnClickListener(new View.OnClickListener() {
@@ -121,9 +132,10 @@ public class CreatePurchaseActivity extends AppCompatActivity {
 
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode == RESULT_CANCELED)super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_CANCELED) super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_ADD && resultCode == RESULT_OK) {
             ProductInfo productInfo = data.getParcelableExtra("product");
             Product product = new Product(productInfo);
@@ -151,8 +163,17 @@ public class CreatePurchaseActivity extends AppCompatActivity {
                 }
                 purchaseTotalSum.setText(String.valueOf(totalSum / 100.0));
             }
+        } else if (requestCode == REQUEST_CODE_EDIT && resultCode == RESULT_OK) {
+            ProductInfo productInfo = data.getParcelableExtra("product");
+            Product product = new Product(productInfo);
+            products.set(position, product);
+            totalSum = 0;
+            for (int i = 0; i < products.size(); i++) {
+                totalSum += products.get(i).getSum();
+            }
+            purchaseTotalSum.setText(String.valueOf(totalSum / 100.0));
+            mAdapter.notifyItemChanged(position);
         }
-
     }
 
     @Override

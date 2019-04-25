@@ -3,6 +3,8 @@ package com.gromov.diploma.view.products;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.gromov.diploma.data.database.entities.Product;
+
 public class ProductInfo implements Parcelable {
 
     private String name;
@@ -17,6 +19,14 @@ public class ProductInfo implements Parcelable {
         this.count = count;
         this.cost = cost;
         this.categoryName = categoryName;
+    }
+
+    public ProductInfo(Product product){
+        this.name = product.getName();
+        this.categoryId = product.getCategoryId();
+        this.count = product.getQuantity();
+        this.cost = product.getSum()/product.getQuantity();
+        this.categoryName = product.getCategory().getName();
     }
 
 
