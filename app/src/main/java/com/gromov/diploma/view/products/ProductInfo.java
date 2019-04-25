@@ -21,11 +21,11 @@ public class ProductInfo implements Parcelable {
 
 
     public ProductInfo(Parcel in) {
-       name = in.readString();
-       categoryId = in.readInt();
-       categoryName = in.readString();
-       count = in.readDouble();
-       cost = in.readDouble();
+        name = in.readString();
+        categoryId = in.readInt();
+        categoryName = in.readString();
+        count = in.readDouble();
+        cost = in.readDouble();
 
     }
 

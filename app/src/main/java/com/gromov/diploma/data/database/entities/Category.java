@@ -23,6 +23,11 @@ public class Category {
         this.required = required;
     }
 
+    public Category(int id, String name){
+        this.name = name;
+        this.id = id;
+    }
+
 
     @Override
     public String toString() {

@@ -58,7 +58,8 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.MyView
         myViewHolder.textViewName.setText(purchase.getRetailPlaceAddress());
         myViewHolder.textViewSum.setText("Итого: " + String.valueOf(purchase.getEcashTotalSum() / 100));
         for (int i = 0; i < purchase.getItems().size(); i++) {
-            itemsName += purchase.getItems().get(i).getName() + "\n";
+
+            itemsName += String.format("%.25s", purchase.getItems().get(i).getName()) + "\n";
             itemsQuantity += String.valueOf(purchase.getItems().get(i).getQuantity() + "\n");
             itemsPrice += String.valueOf(purchase.getItems().get(i).getSum() / 100.0) + " р." + "\n";
         }

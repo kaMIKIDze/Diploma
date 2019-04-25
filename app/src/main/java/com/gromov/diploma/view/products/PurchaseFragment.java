@@ -1,44 +1,28 @@
 package com.gromov.diploma.view.products;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.Gson;
 import com.gromov.diploma.R;
-import com.gromov.diploma.data.async.AddPurchaseAsyncTask;
 import com.gromov.diploma.data.async.GetPurchaseAsyncTask;
 import com.gromov.diploma.data.database.database.DatabasePurchase;
 import com.gromov.diploma.data.database.entities.Purchase;
-import com.gromov.diploma.data.storage.FileSystem;
-import com.nbsp.materialfilepicker.MaterialFilePicker;
-import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
-
-import static android.app.Activity.RESULT_OK;
 
 public class PurchaseFragment extends Fragment {
 
-    private static final int FILE_PICKER_REQUEST_CODE = 1;
-    private static final int PERMISSIONS_REQUEST_CODE = 0;
 
     private FloatingActionButton loadFileBtn;
     private DatabasePurchase databasePurchase;
@@ -54,20 +38,6 @@ public class PurchaseFragment extends Fragment {
     }
 
 
-    private void openFilePicker() {
-        new MaterialFilePicker()
-                .withSupportFragment(this)
-                .withRequestCode(FILE_PICKER_REQUEST_CODE)
-                .withHiddenFiles(true)
-                .withTitle("Sample title")
-                .start();
-    }
-
-    private void showError() {
-        Log.d("Error: ", "Allow external storage reading");
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -78,7 +48,6 @@ public class PurchaseFragment extends Fragment {
         loadFileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //checkPermissionsAndOpenFilePicker();
                 startActivity(new Intent(getActivity(), CreatePurchaseActivity.class));
             }
         });
@@ -113,19 +82,7 @@ public class PurchaseFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == FILE_PICKER_REQUEST_CODE && resultCode == RESULT_OK) {
-            String path = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
 
-            if (path != null) {
-                String fileText = String.valueOf(FileSystem.readText(path));
-
-                Gson gson = new Gson();
-                Purchase purchase = gson.fromJson(fileText, Purchase.class);
-
-
-                new AddPurchaseAsyncTask(databasePurchase, purchase).execute();
-            }
-        }
     }
 
     public void createDb() {
@@ -138,40 +95,10 @@ public class PurchaseFragment extends Fragment {
     }
 
 
-    private void checkPermissionsAndOpenFilePicker() {
-        String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
-
-        if (ContextCompat.checkSelfPermission(requireContext(), permission) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), permission)) {
-                showError();
-            } else {
-                ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()), new String[]{permission}, PERMISSIONS_REQUEST_CODE);
-            }
-        } else {
-            openFilePicker();
-        }
-    }
-
-
     @Override
     public void onStart() {
         getPurchase();
         super.onStart();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[], @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_CODE: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    openFilePicker();
-                } else {
-                    showError();
-                }
-            }
-        }
     }
 
 
