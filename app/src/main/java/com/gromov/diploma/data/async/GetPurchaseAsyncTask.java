@@ -35,19 +35,19 @@ public class GetPurchaseAsyncTask extends AsyncTask<Void, Void, List<Purchase>> 
             List<Product> products = productDao.loadAllByOwnerId(purchase.getId());
             for (int j =0;j<products.size();j++){
 
-                products.get(j).setCategory(categories.get(products.get(j).getCategoryId()-1));
+                products.get(j).setCategory(getCategoriesById(products.get(j).getCategoryId()-1));
             }
            purchase.setItems(products);
         }
         return purchases;
     }
 
-    /*public Category getCategoriesById(int categoryId){
+    public Category getCategoriesById(int categoryId){
         for(Category category : categories){
             if (category.getId() == categoryId) return  category;
         }
         return null;
-    }*/
+    }
 
     @Override
     protected void onPostExecute(List<Purchase> purchases) {

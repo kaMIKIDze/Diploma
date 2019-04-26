@@ -155,8 +155,8 @@ public class CreatePurchaseActivity extends AppCompatActivity {
                 products.addAll(purchase.getItems());
                 totalSum = 0;
                 for (int i = 0; i < products.size(); i++) {
-                    products.get(i).setCategory(new Category((int) spinnerCategory.getSelectedItemId() + 1, String.valueOf(spinnerCategory.getSelectedItem())));
-                    products.get(i).setCategoryId((int) spinnerCategory.getSelectedItemId() + 1);
+                    products.get(i).setCategory(new Category((int) categories.get((int) (spinnerCategory.getSelectedItemId())).getId(), String.valueOf(spinnerCategory.getSelectedItem())));
+                    products.get(i).setCategoryId(categories.get((int) (spinnerCategory.getSelectedItemId())).getId());
                 }
                 for (int i = 0; i < products.size(); i++) {
                     totalSum += products.get(i).getSum();
