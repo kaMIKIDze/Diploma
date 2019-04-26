@@ -188,7 +188,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
             case R.id.save_purchase:
                 purchase = new Purchase();
                 if (String.valueOf(placeName.getText()).isEmpty()) {
-                    Toast.makeText(CreatePurchaseActivity.this, "you must enter a value to converted",
+                    Toast.makeText(CreatePurchaseActivity.this, getString(R.string.error_place_name),
                             Toast.LENGTH_SHORT).show();
                     return false;
                 } else
@@ -213,7 +213,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
     }
 
     private void showError() {
-        Log.d("Error: ", "Allow external storage reading");
+        Toast.makeText(CreatePurchaseActivity.this, getString(R.string.error_reading_storage), Toast.LENGTH_SHORT).show();
     }
 
 

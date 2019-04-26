@@ -31,15 +31,23 @@ public class GetPurchaseAsyncTask extends AsyncTask<Void, Void, List<Purchase>> 
     protected List<Purchase> doInBackground(Void... voids) {
         purchases = purchaseDao.getAllPurshase();
         categories = categoryDao.getAllCategory();
-        for (int i = 0; i < purchases.size(); i++) {
-            List<Product> products = productDao.loadAllByOwnerIds(purchases.get(i).getId());
+        for (Purchase purchase : purchases) {
+            List<Product> products = productDao.loadAllByOwnerId(purchase.getId());
             for (int j =0;j<products.size();j++){
+
                 products.get(j).setCategory(categories.get(products.get(j).getCategoryId()-1));
             }
-            purchases.get(i).setItems(products);
+           purchase.setItems(products);
         }
         return purchases;
     }
+
+    /*public Category getCategoriesById(int categoryId){
+        for(Category category : categories){
+            if (category.getId() == categoryId) return  category;
+        }
+        return null;
+    }*/
 
     @Override
     protected void onPostExecute(List<Purchase> purchases) {

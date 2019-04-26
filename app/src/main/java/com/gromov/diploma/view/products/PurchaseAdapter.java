@@ -57,7 +57,7 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.MyView
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int pos) {
         Purchase purchase = purchases.get(pos);
         myViewHolder.textViewName.setText(purchase.getRetailPlaceAddress());
-        myViewHolder.textViewSum.setText("Итого: " + String.valueOf(purchase.getEcashTotalSum() / 100));
+        myViewHolder.textViewSum.setText(String.valueOf(R.string.total) + String.valueOf(purchase.getEcashTotalSum() / 100));
         List<Product> products = purchase.getItems();
         myViewHolder.mAdapter = new ProductDisplayAdapter(products);
         myViewHolder.recyclerViewProduct.setAdapter(myViewHolder.mAdapter);

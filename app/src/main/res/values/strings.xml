@@ -41,4 +41,12 @@
     <string name="cost_product">Цена за ед. товара:</string>
     <string name="product_total_sum">Итоговая сумма:</string>
     <string name="purchase_total_sum">Итого:</string>
+    <string name="error_product_name">you must enter a product name</string>
+    <string name="error_product_cost">you must enter a product cost</string>
+    <string name="error_product_count">you must enter a product count</string>
+    <string name="with_sum_product">%.1f р.</string>
+    <string name="error_place_name">you must enter a value to converted</string>
+    <string name="error_reading_storage">Allow external storage reading</string>
+    <string name="with_sum_and_quan">%.1f x %.1f</string>
+    <string name="total">Итого:</string>
 </resources>
