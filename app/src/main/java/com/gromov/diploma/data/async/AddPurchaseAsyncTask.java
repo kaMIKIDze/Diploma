@@ -24,7 +24,7 @@ public class AddPurchaseAsyncTask extends AsyncTask {
     protected Object doInBackground(Object[] objects) {
 
         long ownerId = purchaseDao.insertAll(purchase);
-        purchase.setOwnerIdItems(ownerId);
+                purchase.setOwnerIdItems(ownerId);
         productDao.insertAll(purchase.getItems());
 
         return null;

@@ -19,20 +19,20 @@ public class CreatePurchaseAdapter extends RecyclerView.Adapter<CreatePurchaseAd
     private View v;
 
 
-    public CreatePurchaseAdapter(List<Product> products, PurchaseAdapterClickListener listener) {
+    CreatePurchaseAdapter(List<Product> products, PurchaseAdapterClickListener listener) {
         this.products = products;
         this.listener = listener;
     }
 
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView name;
         private TextView category;
         private TextView totalSum;
         private TextView sumAndQuantity;
 
-        public MyViewHolder(@NonNull View itemView) {
+        MyViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name_product);
             category = itemView.findViewById(R.id.category_product);

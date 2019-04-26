@@ -3,6 +3,7 @@ package com.gromov.diploma.view.products;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -17,18 +18,15 @@ import com.gromov.diploma.data.async.GetPurchaseAsyncTask;
 import com.gromov.diploma.data.database.database.DatabasePurchase;
 import com.gromov.diploma.data.database.entities.Purchase;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class PurchaseFragment extends Fragment {
 
 
-    private FloatingActionButton loadFileBtn;
     private DatabasePurchase databasePurchase;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
     private List<Purchase> purchases;
 
 
@@ -39,12 +37,12 @@ public class PurchaseFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.purchase_fragment, container, false);
 
 
-        loadFileBtn = view.findViewById(R.id.fab);
+        FloatingActionButton loadFileBtn = view.findViewById(R.id.fab);
         loadFileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,27 +69,16 @@ public class PurchaseFragment extends Fragment {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        layoutManager = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new PurchaseAdapter(purchases);
         recyclerView.setAdapter(mAdapter);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
     }
 
     public void createDb() {
         Context context = getContext();
         databasePurchase = DatabasePurchase.getInstanse(context);
     }
-
-    public void closeDb() throws IOException {
-        databasePurchase.close();
-    }
-
 
     @Override
     public void onStart() {

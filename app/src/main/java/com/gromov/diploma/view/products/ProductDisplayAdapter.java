@@ -15,10 +15,10 @@ import java.util.List;
 public class ProductDisplayAdapter extends RecyclerView.Adapter<ProductDisplayAdapter.MyViewHolder> {
 
     private List<Product> products;
-    private boolean flag = false;
     private final static int MAX_SIZE = 5;
+    View v;
 
-    public ProductDisplayAdapter(List<Product> products) {
+    ProductDisplayAdapter(List<Product> products) {
         this.products = products;
     }
 
@@ -26,7 +26,7 @@ public class ProductDisplayAdapter extends RecyclerView.Adapter<ProductDisplayAd
     @NonNull
     @Override
     public ProductDisplayAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View v = LayoutInflater.from(parent.getContext())
+        v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_product, parent, false);
         return new MyViewHolder(v);
     }
@@ -34,22 +34,23 @@ public class ProductDisplayAdapter extends RecyclerView.Adapter<ProductDisplayAd
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         myViewHolder.textViewNameItems.setText(products.get(i).getName());
-        myViewHolder.textViewPriceItems.setText(String.valueOf(products.get(i).getSum() / 100.0) + " р.");
+        myViewHolder.textViewPriceItems.setText(String.valueOf(products.get(i).getSum() / 100.0) + v.getContext().getString(R.string.currency_unit_rus));
         myViewHolder.textViewQuantityItems.setText(String.valueOf(products.get(i).getQuantity()));
     }
 
     @Override
     public int getItemCount() {
-        if (flag||products.size()<MAX_SIZE) return products.size();
+        boolean flag = false;
+        if (flag ||products.size()<MAX_SIZE) return products.size();
         else return MAX_SIZE;
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView textViewNameItems;
         private TextView textViewQuantityItems;
         private TextView textViewPriceItems;
 
-        public MyViewHolder(@NonNull View v) {
+        MyViewHolder(@NonNull View v) {
             super(v);
             textViewNameItems = v.findViewById(R.id.purchase_items_name_text);
             textViewQuantityItems = v.findViewById(R.id.purchase_items_quantity_text);

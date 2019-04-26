@@ -1,5 +1,6 @@
 package com.gromov.diploma.view.products;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import java.util.List;
 public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.MyViewHolder> {
 
     private List<Purchase> purchases;
+    View v;
 
 
     public PurchaseAdapter(List<Purchase> purchases) {
@@ -47,17 +49,18 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.MyView
     @Override
     public PurchaseAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
                                                            int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
+        v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_purchase, parent, false);
 
         return new MyViewHolder(v);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int pos) {
         Purchase purchase = purchases.get(pos);
         myViewHolder.textViewName.setText(purchase.getRetailPlaceAddress());
-        myViewHolder.textViewSum.setText(String.valueOf(R.string.total) + String.valueOf(purchase.getEcashTotalSum() / 100));
+        myViewHolder.textViewSum.setText(v.getContext().getString(R.string.total) + String.valueOf(purchase.getEcashTotalSum() / 100));
         List<Product> products = purchase.getItems();
         myViewHolder.mAdapter = new ProductDisplayAdapter(products);
         myViewHolder.recyclerViewProduct.setAdapter(myViewHolder.mAdapter);

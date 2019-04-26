@@ -13,16 +13,16 @@ import com.gromov.diploma.data.database.entities.Category;
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
-    List<Category> categories;
+    private List<Category> categories;
 
-    public CategoryAdapter(List<Category> categories) {
+    CategoryAdapter(List<Category> categories) {
         this.categories = categories;
     }
 
-    public static class CategoryViewHolder extends RecyclerView.ViewHolder {
+    static class CategoryViewHolder extends RecyclerView.ViewHolder {
         TextView categoryText;
 
-        public CategoryViewHolder(View view) {
+        CategoryViewHolder(View view) {
             super(view);
             categoryText = view.findViewById(R.id.text_card_category);
 
@@ -31,6 +31,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     }
 
 
+    @NonNull
     @Override
     public CategoryAdapter.CategoryViewHolder onCreateViewHolder(ViewGroup parent,
                                                                  int viewType) {
@@ -57,7 +58,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         return categories.size();
     }
 
-    public void removeItem(int position) {
+    void removeItem(int position) {
         categories.remove(position);
         notifyItemRemoved(position);
     }
@@ -66,7 +67,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         return categories;
     }
 
-   public void restoreItem(Category item, int position) {
+   void restoreItem(Category item, int position) {
         categories.add(position,item);
         notifyItemInserted(position);
     }

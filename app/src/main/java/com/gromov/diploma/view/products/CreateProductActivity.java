@@ -11,12 +11,10 @@ import java.util.Objects;
 
 public class CreateProductActivity extends ProductActivity {
 
-    private int idParentCategory;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_create_product);
-        idParentCategory = Integer.parseInt(Objects.requireNonNull(getIntent().getExtras().getString("id_category")));
+        int idParentCategory = Integer.parseInt(Objects.requireNonNull(getIntent().getExtras().getString("id_category")));
 
         super.onCreate(savedInstanceState);
 

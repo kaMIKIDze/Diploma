@@ -15,7 +15,6 @@ import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,19 +45,12 @@ public class CreatePurchaseActivity extends AppCompatActivity {
     private static final int PERMISSIONS_REQUEST_CODE = 0;
 
 
-    private String[] categoriesNames;
     private TextInputEditText placeName;
     private List<Category> categories;
     private List<Product> products;
     private DatabasePurchase databasePurchase;
     private AppCompatSpinner spinnerCategory;
-    private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private Toolbar toolbar;
-    private FloatingActionButton addProduct;
-    private FloatingActionButton addCheck;
-    private Purchase purchase;
     private AppCompatTextView purchaseTotalSum;
     private double totalSum;
     private int position;
@@ -70,7 +62,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_purchase);
 
         createDb();
-        toolbar = findViewById(R.id.create_purchase_toolbar);
+        Toolbar toolbar = findViewById(R.id.create_purchase_toolbar);
         setSupportActionBar(toolbar);
 
         products = new ArrayList<>();
@@ -86,7 +78,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        categoriesNames = GetStringArray(categories);
+        String[] categoriesNames = GetStringArray(categories);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categoriesNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -94,8 +86,8 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         spinnerCategory.setSelection(1);
 
 
-        recyclerView = findViewById(R.id.recycler_view_purchase);
-        layoutManager = new LinearLayoutManager(this);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view_purchase);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new CreatePurchaseAdapter(products, new PurchaseAdapterClickListener() {
             @Override
@@ -110,7 +102,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
         recyclerView.setNestedScrollingEnabled(true);
 
-        addProduct = findViewById(R.id.create_purchase_fab);
+        FloatingActionButton addProduct = findViewById(R.id.create_purchase_fab);
         addProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,7 +114,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         });
 
 
-        addCheck = findViewById(R.id.create_purchase_fab_check);
+        FloatingActionButton addCheck = findViewById(R.id.create_purchase_fab_check);
         addCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,7 +178,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save_purchase:
-                purchase = new Purchase();
+                Purchase purchase = new Purchase();
                 if (String.valueOf(placeName.getText()).isEmpty()) {
                     Toast.makeText(CreatePurchaseActivity.this, getString(R.string.error_place_name),
                             Toast.LENGTH_SHORT).show();

@@ -10,7 +10,6 @@ import java.util.List;
 public class GetCategoryAsyncTask extends AsyncTask<Void, Void, List<Category>> {
 
     private CategoryDao categoryDao;
-    private List<Category> categories;
 
     public GetCategoryAsyncTask(DatabasePurchase databasePurchase){
         this.categoryDao = databasePurchase.categoryDao();
@@ -18,7 +17,7 @@ public class GetCategoryAsyncTask extends AsyncTask<Void, Void, List<Category>> 
 
     @Override
     protected List<Category> doInBackground(Void... voids) {
-        categories = categoryDao.getAllCategory();
+        List<Category> categories = categoryDao.getAllCategory();
         return categories;
     }
 
