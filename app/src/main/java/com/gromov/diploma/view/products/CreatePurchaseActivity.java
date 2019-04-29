@@ -68,6 +68,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         createDb();
         createViews();
 
+
         setSupportActionBar(toolbar);
         products = new ArrayList<>();
         getCategories();
@@ -75,7 +76,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         embodySpinner();
         embodyRecyclerView();
         setClickListener();
-
+        getSupportActionBar().setTitle("Создание покупки");
     }
 
     private void createViews() {

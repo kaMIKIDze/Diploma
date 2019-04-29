@@ -15,6 +15,7 @@ public class EditProductActivity extends ProductActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         productInfoParent = getIntent().getParcelableExtra("product");
+        getSupportActionBar().setTitle("Изменение продукта");
     }
 
 

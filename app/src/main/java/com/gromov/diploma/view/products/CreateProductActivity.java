@@ -17,6 +17,7 @@ public class CreateProductActivity extends ProductActivity {
         super.onCreate(savedInstanceState);
         int idSpinner = Integer.parseInt(Objects.requireNonNull(Objects.requireNonNull(getIntent().getExtras()).getString("id_selected_item_spinner")));
         category.setSelection(idSpinner);//
+        getSupportActionBar().setTitle("Добавление продукта");
     }
 
 

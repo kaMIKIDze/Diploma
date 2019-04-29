@@ -51,10 +51,9 @@ public class PurchaseFragment extends Fragment {
         });
 
         createDb();
-
         recyclerView = view.findViewById(R.id.recycler_view);
-
         getPurchase();
+
 
         return view;
     }
