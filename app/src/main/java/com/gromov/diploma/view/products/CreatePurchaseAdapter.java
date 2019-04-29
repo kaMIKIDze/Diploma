@@ -16,14 +16,35 @@ public class CreatePurchaseAdapter extends RecyclerView.Adapter<CreatePurchaseAd
 
     private List<Product> products;
     private PurchaseAdapterClickListener listener;
-    private View v;
-
 
     CreatePurchaseAdapter(List<Product> products, PurchaseAdapterClickListener listener) {
         this.products = products;
         this.listener = listener;
     }
 
+
+
+    @NonNull
+    @Override
+    public CreatePurchaseAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.list_item_create_purchase, parent, false);
+
+
+        return new CreatePurchaseAdapter.MyViewHolder(v);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, final int pos) {
+        myViewHolder.bind(pos);
+    }
+
+
+    @Override
+    public int getItemCount() {
+
+        return products.size();
+    }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -39,40 +60,22 @@ public class CreatePurchaseAdapter extends RecyclerView.Adapter<CreatePurchaseAd
             totalSum = itemView.findViewById(R.id.total_sum);
             sumAndQuantity = itemView.findViewById(R.id.sum_and_quantity);
         }
+
+        void bind(final int pos) {
+            final Product product = products.get(pos);
+
+            name.setText(product.getName());
+            totalSum.setText(String.format(totalSum.getContext().getString(R.string.with_sum_product), product.getSum() / 100.0));
+            category.setText(product.getCategory().getName());
+            sumAndQuantity.setText(String.format(totalSum.getContext().getString(R.string.with_sum_and_quan), ((product.getSum() / product.getQuantity()) / 100.0), product.getQuantity()));
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(product, pos);
+                }
+            });
+        }
     }
-
-    @NonNull
-    @Override
-    public CreatePurchaseAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_create_purchase, parent, false);
-
-        return new CreatePurchaseAdapter.MyViewHolder(v);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, final int pos) {
-
-        myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Product product = products.get(pos);               
-                listener.onItemClick(product,pos);
-            }
-        });
-        Product product = products.get(pos);
-        myViewHolder.name.setText(product.getName());
-        myViewHolder.totalSum.setText(String.format(v.getContext().getString(R.string.with_sum_product), product.getSum() / 100.0));
-        myViewHolder.category.setText(product.getCategory().getName());
-        myViewHolder.sumAndQuantity.setText(String.format(v.getContext().getString(R.string.with_sum_and_quan), ((product.getSum() / product.getQuantity()) / 100.0), product.getQuantity()));
-    }
-
-
-    @Override
-    public int getItemCount() {
-
-        return products.size();
-    }
-
 
 }

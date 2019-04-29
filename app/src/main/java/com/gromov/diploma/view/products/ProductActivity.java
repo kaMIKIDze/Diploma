@@ -18,6 +18,7 @@ import com.gromov.diploma.data.database.database.DatabasePurchase;
 import com.gromov.diploma.data.database.entities.Category;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 public abstract class ProductActivity extends AppCompatActivity {
@@ -31,16 +32,18 @@ public abstract class ProductActivity extends AppCompatActivity {
     protected String[] categoriesNames;
     protected Toolbar productToolbar;
     protected ProductInfo productInfo;
+    protected int idParentCategory;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_create_product);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_create_product);
+        idParentCategory = Integer.parseInt(Objects.requireNonNull(getIntent().getExtras().getString("id_category")));
 
         createDb();
         createViews();
-        setWiews();
+        setViews();
     }
 
     public void createViews() {
@@ -53,7 +56,7 @@ public abstract class ProductActivity extends AppCompatActivity {
     }
 
 
-    public void setWiews() {
+    protected void setViews() {
 
         setSupportActionBar(productToolbar);
 
@@ -131,13 +134,20 @@ public abstract class ProductActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.save_product:
                 productInfo = new ProductInfo(String.valueOf(productName.getText()),
-                        (int) category.getSelectedItemId(),
+                        getCategoryByName(categories.get((int) category.getSelectedItemId()).getName()).getId(),
                         categories.get((int) category.getSelectedItemId()).getName(),
                         Double.parseDouble(String.valueOf(countProduct.getText())),
                         Double.parseDouble(String.valueOf(costProduct.getText())));
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private Category getCategoryByName(String categoryName) {
+        for (Category category : categories) {
+            if (category.getName() == categoryName) return category;
+        }
+        return null;
     }
 
     public static String[] GetStringArray(List<Category> arr) {

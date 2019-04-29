@@ -13,15 +13,13 @@ public class EditProductActivity extends ProductActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_create_product);
-        productInfoParent = getIntent().getParcelableExtra("product");
-
         super.onCreate(savedInstanceState);
+        productInfoParent = getIntent().getParcelableExtra("product");
     }
 
 
-    public void setWiews() {
-        super.setWiews();
+    protected void setViews() {
+        super.setViews();
 
         productName.setText(productInfoParent.getName());
 
@@ -32,35 +30,11 @@ public class EditProductActivity extends ProductActivity {
     }
 
 
-    public void countingSum() {
-        double count = Double.parseDouble(String.valueOf(countProduct.getText()));
-        double cost = (Double.parseDouble(String.valueOf(costProduct.getText())));
-        String str = String.format(getString(R.string.with_sum_product), count * cost);
-        totalSum.setText(str);
-    }
-
-
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save_product:
-                if (String.valueOf(productName.getText()).isEmpty()) {
-                    Toast.makeText(EditProductActivity.this, getString(R.string.error_product_name),
-                            Toast.LENGTH_SHORT).show();
-                    return false;
-                }
-                if (String.valueOf(costProduct.getText()).isEmpty()) {
-                    Toast.makeText(EditProductActivity.this, getString(R.string.error_product_cost),
-                            Toast.LENGTH_SHORT).show();
-                    return false;
-                }
-                if (String.valueOf(countProduct.getText()).isEmpty()) {
-                    Toast.makeText(EditProductActivity.this, getString(R.string.error_product_count),
-                            Toast.LENGTH_SHORT).show();
-                    return false;
-                }
+                if (!isValid()) return false;
 
                 super.onOptionsItemSelected(item);
 
@@ -71,7 +45,26 @@ public class EditProductActivity extends ProductActivity {
                 finish();
                 break;
         }
-        return super.onOptionsItemSelected(item);
+        return false;
+    }
+
+    private boolean isValid() {
+        if (String.valueOf(productName.getText()).isEmpty()) {
+            Toast.makeText(EditProductActivity.this, getString(R.string.error_product_name),
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (String.valueOf(costProduct.getText()).isEmpty()) {
+            Toast.makeText(EditProductActivity.this, getString(R.string.error_product_cost),
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (String.valueOf(countProduct.getText()).isEmpty()) {
+            Toast.makeText(EditProductActivity.this, getString(R.string.error_product_count),
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
 

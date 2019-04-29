@@ -50,10 +50,14 @@ public class CreatePurchaseActivity extends AppCompatActivity {
     private List<Product> products;
     private DatabasePurchase databasePurchase;
     private AppCompatSpinner spinnerCategory;
-    private RecyclerView.Adapter mAdapter;
+    private CreatePurchaseAdapter mAdapter;
     private AppCompatTextView purchaseTotalSum;
     private double totalSum;
     private int position;
+    private Toolbar toolbar;
+    private RecyclerView recyclerView;
+    private FloatingActionButton addProduct;
+    private FloatingActionButton addCheck;
 
 
     @Override
@@ -62,13 +66,36 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_purchase);
 
         createDb();
-        Toolbar toolbar = findViewById(R.id.create_purchase_toolbar);
-        setSupportActionBar(toolbar);
+        createViews();
 
+        setSupportActionBar(toolbar);
         products = new ArrayList<>();
+        getCategories();
+
+        embodySpinner();
+        embodyRecyclerView();
+        setClickListener();
+
+    }
+
+    private void createViews() {
         placeName = findViewById(R.id.place_name);
         purchaseTotalSum = findViewById(R.id.purchase_total_sum);
         spinnerCategory = findViewById(R.id.spinnerCategory);
+        toolbar = findViewById(R.id.create_purchase_toolbar);
+        recyclerView = findViewById(R.id.recycler_view_purchase);
+        addProduct = findViewById(R.id.create_purchase_fab);
+        addCheck = findViewById(R.id.create_purchase_fab_check);
+    }
+
+    private Category getCategoryByName(String categoryName) {
+        for (Category category : categories) {
+            if (category.getName() == categoryName) return category;
+        }
+        return null;
+    }
+
+    private void getCategories() {
 
         try {
             categories = new GetCategoryAsyncTask(databasePurchase).execute().get();
@@ -78,15 +105,37 @@ public class CreatePurchaseActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String[] categoriesNames = GetStringArray(categories);
+    }
 
+    private void setClickListener() {
+        addProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(CreatePurchaseActivity.this, CreateProductActivity.class);
+                i.putExtra("category", String.valueOf(spinnerCategory.getSelectedItem()));
+                i.putExtra("id_category", String.valueOf(getCategoryByName((String) spinnerCategory.getSelectedItem()).getId()));//индексы листа начинаются от 0, а в БД от 1
+                i.putExtra("id_selected_item_spinner", String.valueOf(spinnerCategory.getSelectedItemId()));
+                startActivityForResult(i, REQUEST_CODE_ADD);
+            }
+        });
+
+        addCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkPermissionsAndOpenFilePicker();
+            }
+        });
+    }
+
+    private void embodySpinner() {
+        String[] categoriesNames = GetStringArray(categories);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categoriesNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategory.setAdapter(adapter);
-        spinnerCategory.setSelection(1);
+        spinnerCategory.setSelection(0);
+    }
 
-
-        RecyclerView recyclerView = findViewById(R.id.recycler_view_purchase);
+    private void embodyRecyclerView() {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new CreatePurchaseAdapter(products, new PurchaseAdapterClickListener() {
@@ -96,76 +145,70 @@ public class CreatePurchaseActivity extends AppCompatActivity {
                 Intent i = new Intent(CreatePurchaseActivity.this, EditProductActivity.class);
                 ProductInfo productInfo = new ProductInfo(item);
                 i.putExtra("product", productInfo);
+                i.putExtra("id_category", String.valueOf(getCategoryByName((String) spinnerCategory.getSelectedItem()).getId()));
                 startActivityForResult(i, REQUEST_CODE_EDIT);
             }
         });
         recyclerView.setAdapter(mAdapter);
         recyclerView.setNestedScrollingEnabled(true);
-
-        FloatingActionButton addProduct = findViewById(R.id.create_purchase_fab);
-        addProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(CreatePurchaseActivity.this, CreateProductActivity.class);
-                i.putExtra("category", String.valueOf(spinnerCategory.getSelectedItem()));
-                i.putExtra("id_category", String.valueOf(spinnerCategory.getSelectedItemId()));
-                startActivityForResult(i, REQUEST_CODE_ADD);
-            }
-        });
-
-
-        FloatingActionButton addCheck = findViewById(R.id.create_purchase_fab_check);
-        addCheck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkPermissionsAndOpenFilePicker();
-            }
-        });
-
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_CANCELED) super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_ADD && resultCode == RESULT_OK) {
-            ProductInfo productInfo = data.getParcelableExtra("product");
-            Product product = new Product(productInfo);
-            products.add(product);
-            totalSum = 0;
-            for (int i = 0; i < products.size(); i++) {
-                totalSum += products.get(i).getSum();
-            }
-            purchaseTotalSum.setText(String.valueOf(totalSum / 100.0));
+            ActivityResultAdd(data);
         } else if (requestCode == FILE_PICKER_REQUEST_CODE && resultCode == RESULT_OK) {
-            String path = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
-
-            if (path != null) {
-                String fileText = String.valueOf(FileSystem.readText(path));
-                Gson gson = new Gson();
-                Purchase purchase = gson.fromJson(fileText, Purchase.class);
-                products.addAll(purchase.getItems());
-                totalSum = 0;
-                for (int i = 0; i < products.size(); i++) {
-                    products.get(i).setCategory(new Category((int) categories.get((int) (spinnerCategory.getSelectedItemId())).getId(), String.valueOf(spinnerCategory.getSelectedItem())));
-                    products.get(i).setCategoryId(categories.get((int) (spinnerCategory.getSelectedItemId())).getId());
-                }
-                for (int i = 0; i < products.size(); i++) {
-                    totalSum += products.get(i).getSum();
-                }
-                purchaseTotalSum.setText(String.valueOf(totalSum / 100.0));
-            }
+            ActivityResultFilePicker(data);
         } else if (requestCode == REQUEST_CODE_EDIT && resultCode == RESULT_OK) {
-            ProductInfo productInfo = data.getParcelableExtra("product");
-            Product product = new Product(productInfo);
-            products.set(position, product);
+            ActivityResultEdit(data);
+        }
+    }
+
+    private void ActivityResultAdd(Intent data) {
+        ProductInfo productInfo = data.getParcelableExtra("product");
+        Product product = new Product(productInfo);
+        products.add(product);
+        totalSum = 0;
+        for (int i = 0; i < products.size(); i++) {
+            totalSum += products.get(i).getSum();
+        }
+        purchaseTotalSum.setText(String.valueOf(totalSum / 100.0));
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private void ActivityResultFilePicker(Intent data) {
+        String path = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
+
+        if (path != null) {
+            String fileText = String.valueOf(FileSystem.readText(path));
+            Gson gson = new Gson();
+            Purchase purchase = gson.fromJson(fileText, Purchase.class);
+            List<Product> productsFromCheck = purchase.getItems();
             totalSum = 0;
+            for (int i = 0; i < productsFromCheck.size(); i++) {
+                productsFromCheck.get(i).setCategory(new Category((int) categories.get((int) (spinnerCategory.getSelectedItemId())).getId(), String.valueOf(spinnerCategory.getSelectedItem())));
+                productsFromCheck.get(i).setCategoryId(categories.get((int) (spinnerCategory.getSelectedItemId())).getId());
+            }
+            products.addAll(purchase.getItems());
             for (int i = 0; i < products.size(); i++) {
                 totalSum += products.get(i).getSum();
             }
             purchaseTotalSum.setText(String.valueOf(totalSum / 100.0));
-            mAdapter.notifyItemChanged(position);
+            mAdapter.notifyDataSetChanged();
         }
+    }
+
+    private void ActivityResultEdit(Intent data) {
+        ProductInfo productInfo = data.getParcelableExtra("product");
+        Product product = new Product(productInfo);
+        products.set(position, product);
+        totalSum = 0;
+        for (int i = 0; i < products.size(); i++) {
+            totalSum += products.get(i).getSum();
+        }
+        purchaseTotalSum.setText(String.valueOf(totalSum / 100.0));
+        mAdapter.notifyItemChanged(position);
     }
 
     @Override

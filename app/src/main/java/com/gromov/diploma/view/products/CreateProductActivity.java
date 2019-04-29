@@ -13,12 +13,10 @@ public class CreateProductActivity extends ProductActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_create_product);
-        int idParentCategory = Integer.parseInt(Objects.requireNonNull(getIntent().getExtras().getString("id_category")));
 
         super.onCreate(savedInstanceState);
-
-        category.setSelection(idParentCategory);
+        int idSpinner = Integer.parseInt(Objects.requireNonNull(Objects.requireNonNull(getIntent().getExtras()).getString("id_selected_item_spinner")));
+        category.setSelection(idSpinner);//
     }
 
 
