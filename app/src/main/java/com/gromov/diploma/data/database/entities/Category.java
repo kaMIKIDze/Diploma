@@ -1,4 +1,4 @@
-package com.gromov.diploma;
+package com.gromov.diploma.data.database.entities;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
@@ -11,6 +11,28 @@ public class Category {
     private String name;
     private int required;
 
+
+    public Category() {
+        id = 1;
+        name = "неизвестно";
+        required = 0;
+    }
+
+    public Category(String name, int required) {
+        this.name = name;
+        this.required = required;
+    }
+
+    public Category(int id, String name){
+        this.name = name;
+        this.id = id;
+    }
+
+
+    @Override
+    public String toString() {
+        return name;
+    }
 
     public int getRequired() {
         return required;

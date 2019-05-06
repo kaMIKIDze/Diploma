@@ -1,10 +1,13 @@
-package com.gromov.diploma;
+package com.gromov.diploma.data.database.entities;
 
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+
+import com.gromov.diploma.view.products.ProductInfo;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
@@ -27,24 +30,47 @@ public class Product {
     private String name;
     private int sum;
     private double quantity;
-    private int categoryId = 1;  // Выбор категории товаров в покупке (продукты, спорт и т.д.)
+    @Ignore
+    private Category category = new Category();
+    private int categoryId = category.getId();
 
     @ColumnInfo(name = "ownerId")
     public long ownerId;// this ID points to a Purchase
 
+    public Product(String name, int sum, double quantity){
+        this.name = name;
+        this.sum = sum;
+        this.quantity = quantity;
+    }
+
+    public Product(ProductInfo productInfo){
+        this.name = productInfo.getName();
+        this.quantity = productInfo.getCount();
+        this.category = new Category(productInfo.getCategoryName(),1);
+        this.categoryId = productInfo.getCategoryId();
+        this.sum = (int) (productInfo.getCost()*100*quantity);
+    }
 
     @Override
     public String toString() {
-        String string = String.format("%-35.30s%s%10s%n", name, '|', sum);
+        String string = String.format("%-35.30s%10s%n", name, sum);
         return string;
     }
 
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public int getCategoryId() {
         return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     public void setId(int id) {
