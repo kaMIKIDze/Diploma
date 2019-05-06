@@ -50,4 +50,6 @@
     <string name="with_sum_and_quan">%.1f x %.1f</string>
     <string name="total">Итого:</string>
     <string name="currency_unit_rus">р.</string>
+    <string name="date_purchase">Date</string>
+    <string name="date_format">MM/dd/yyyy HH:mm:ss</string>
 </resources>
