@@ -143,7 +143,7 @@ public abstract class ProductActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private Category getCategoryByName(String categoryName) {
+    protected Category getCategoryByName(String categoryName) {
         for (Category category : categories) {
             if (category.getName() == categoryName) return category;
         }

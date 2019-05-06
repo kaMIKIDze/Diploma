@@ -68,7 +68,6 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         createDb();
         createViews();
 
-
         setSupportActionBar(toolbar);
         products = new ArrayList<>();
         getCategories();

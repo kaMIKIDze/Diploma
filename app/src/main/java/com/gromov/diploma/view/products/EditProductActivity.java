@@ -2,10 +2,13 @@ package com.gromov.diploma.view.products;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatSpinner;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.gromov.diploma.R;
+
+import java.util.Objects;
 
 public class EditProductActivity extends ProductActivity {
 
@@ -13,8 +16,8 @@ public class EditProductActivity extends ProductActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         productInfoParent = getIntent().getParcelableExtra("product");
+        super.onCreate(savedInstanceState);
         getSupportActionBar().setTitle("Изменение продукта");
     }
 
@@ -23,13 +26,21 @@ public class EditProductActivity extends ProductActivity {
         super.setViews();
 
         productName.setText(productInfoParent.getName());
-
-        category.setSelection(productInfoParent.getCategoryId() - 1);
+        category.setSelection(getIndex(productInfoParent.getCategoryName()));
         countProduct.setText(String.valueOf(productInfoParent.getCount()));
         costProduct.setText(String.valueOf(productInfoParent.getCost() / 100.0));
         countingSum();
     }
 
+    private int getIndex(String myString) {
+        for (int i = 0; i < category.getCount(); i++) {
+            if (category.getItemAtPosition(i).toString().equalsIgnoreCase(myString)) {
+                return i;
+            }
+        }
+
+        return 0;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
