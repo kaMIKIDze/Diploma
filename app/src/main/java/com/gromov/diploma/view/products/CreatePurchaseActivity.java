@@ -34,6 +34,7 @@ import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
@@ -230,6 +231,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
                     purchase.setRetailPlaceAddress(String.valueOf(placeName.getText()));
                 purchase.setItems(products);
                 purchase.setEcashTotalSum((float) totalSum);
+                purchase.setCurrentTime(Calendar.getInstance().getTime());
                 new AddPurchaseAsyncTask(databasePurchase, purchase).execute();
                 finish();
 

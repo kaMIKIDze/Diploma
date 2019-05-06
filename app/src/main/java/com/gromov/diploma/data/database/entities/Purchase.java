@@ -5,6 +5,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -20,6 +22,7 @@ public class Purchase {
     private float ecashTotalSum = 0; //общая стоимость (высчитываем из товаров или задаем сами?)
     @Ignore
     private List<Product> items; //Список покупок
+    private Date currentTime = null;
 
 
     @Override
@@ -37,6 +40,9 @@ public class Purchase {
             this.getItems().get(i).setOwnerId(id);
     }
 
+    public Date getCurrentTime() {
+        return currentTime;
+    }
 
     public float getEcashTotalSum() {
         return ecashTotalSum;
@@ -55,6 +61,10 @@ public class Purchase {
         return retailPlaceAddress;
     }
 
+
+    public void setCurrentTime(Date currentTime) {
+        this.currentTime = currentTime;
+    }
 
     public void setEcashTotalSum(float ecashTotalSum) {
         this.ecashTotalSum = ecashTotalSum;

@@ -12,6 +12,8 @@ import com.gromov.diploma.R;
 import com.gromov.diploma.data.database.entities.Product;
 import com.gromov.diploma.data.database.entities.Purchase;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.MyViewHolder> {
@@ -28,6 +30,7 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.MyView
 
         private TextView textViewName;
         private TextView textViewSum;
+        private TextView textViewDate;
         private RecyclerView recyclerViewProduct;
         private RecyclerView.Adapter mAdapter;
 
@@ -38,9 +41,11 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.MyView
             super(v);
             textViewName = v.findViewById(R.id.purchase_name_text);
             textViewSum = v.findViewById(R.id.purchase_sum_text);
+            textViewDate = v.findViewById(R.id.date_text);
             recyclerViewProduct = v.findViewById(R.id.products_recycler_view);
             layoutManager = new LinearLayoutManager(v.getContext());
             recyclerViewProduct.setLayoutManager(layoutManager);
+
         }
     }
 
@@ -60,6 +65,11 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.MyView
         Purchase purchase = purchases.get(pos);
         myViewHolder.textViewName.setText(purchase.getRetailPlaceAddress());
         myViewHolder.textViewSum.setText(v.getContext().getString(R.string.total) + String.valueOf(purchase.getEcashTotalSum() / 100));
+        DateFormat df = new SimpleDateFormat(v.getContext().getString(R.string.date_format));
+        String reportDate = df.format(purchase.getCurrentTime());
+
+
+        myViewHolder.textViewDate.setText(reportDate);
         List<Product> products = purchase.getItems();
         myViewHolder.mAdapter = new ProductDisplayAdapter(products);
         myViewHolder.recyclerViewProduct.setAdapter(myViewHolder.mAdapter);

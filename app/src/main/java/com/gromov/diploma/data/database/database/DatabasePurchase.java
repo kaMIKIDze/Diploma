@@ -3,6 +3,7 @@ package com.gromov.diploma.data.database.database;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 
 import com.gromov.diploma.data.database.daos.CategoryDao;
@@ -14,6 +15,7 @@ import com.gromov.diploma.data.database.entities.Purchase;
 
 
 @Database(entities = {Purchase.class, Product.class, Category.class}, version = 1)
+@TypeConverters({Converters.class})
 public abstract class DatabasePurchase extends RoomDatabase {
     public abstract PurchaseDao purchaseDao();
     public abstract ProductDao productDao();
