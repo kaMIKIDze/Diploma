@@ -7,19 +7,22 @@
     tools:context=".view.analysis.AnalysisFragment">
 
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:focusableInTouchMode="true"
+                android:padding="10sp">
 
                 <TextView
                     android:layout_width="0dp"
@@ -33,7 +36,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
-                    android:text="aaa" />
+                    android:text=""
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -46,7 +50,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.25"
-                    android:text="bbb" />
+                    android:text=""
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"/>
 
             </LinearLayout>
 
@@ -56,14 +61,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
-                android:minHeight="500dp"
-                android:padding="20dp" />
-        </RelativeLayout>
+                android:minHeight="400dp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/legend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10sp">
+
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
 
 
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
 
 </android.support.design.widget.CoordinatorLayout>

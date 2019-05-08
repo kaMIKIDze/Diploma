@@ -28,4 +28,6 @@ public interface PurchaseDao {
     @Query("SELECT * FROM purchase WHERE currentTime BETWEEN :from AND :to")
     List<Purchase> findBetweenDates(Date from, Date to);
 
+    @Query("SELECT MIN(currentTime) FROM purchase")
+    Date findMinDate();
 }

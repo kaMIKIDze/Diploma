@@ -1,7 +1,6 @@
 package com.gromov.diploma.data.async;
 
 import android.os.AsyncTask;
-import android.provider.ContactsContract;
 
 import com.gromov.diploma.data.database.daos.CategoryDao;
 import com.gromov.diploma.data.database.daos.ProductDao;
@@ -11,7 +10,6 @@ import com.gromov.diploma.data.database.entities.Category;
 import com.gromov.diploma.data.database.entities.Product;
 import com.gromov.diploma.data.database.entities.Purchase;
 
-import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;

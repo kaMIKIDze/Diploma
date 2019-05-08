@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.gromov.diploma.R;
+import com.gromov.diploma.data.async.AddMinDateAsyncTask;
 import com.gromov.diploma.data.async.GetCategoryAsyncTask;
 import com.gromov.diploma.data.async.GetPurchaseAsyncTask;
 import com.gromov.diploma.data.database.database.DatabasePurchase;
@@ -32,6 +35,7 @@ import com.gromov.diploma.data.database.entities.Purchase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -40,20 +44,31 @@ public class AnalysisFragment extends Fragment {
 
     private PieChart chart;
     private DatabasePurchase databasePurchase;
-    private List<StatisticsByCategotY> statistics;
+    private List<StatisticsByCategory> statistics;
     private List<Category> categories;
     private View v;
-    private Calendar dateAndTime = Calendar.getInstance();
+    private Calendar calendarBegin = Calendar.getInstance();
+    private Calendar calendarEnd = Calendar.getInstance();
+    private Date dateBegin;
+    private Date dateEnd = Calendar.getInstance().getTime();
     private Button dateBeginText;
     private Button dateEndText;
+    private DatePicker d;
+    private RecyclerView recyclerView;
+    private AnalysisAdapter adapter;
+    private PieDataSet dataSet;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         v = inflater.inflate(R.layout.fragment_analysis, container, false);
+        createDb();
+        d = new DatePicker(v.getContext());//??
+        dateBegin = new Date(d.getMinDate());
         dateBeginText = v.findViewById(R.id.time_begin);
-        dateEndText = v.findViewById(R.id.time_end);
+        setStartBeginDate();
+
         dateBeginText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +76,8 @@ public class AnalysisFragment extends Fragment {
             }
         });
 
+        dateEndText = v.findViewById(R.id.time_end);
+        setStartEndDate();
         dateEndText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,49 +87,73 @@ public class AnalysisFragment extends Fragment {
         chart = v.findViewById(R.id.piechart);
         chart.setUsePercentValues(true);
 
-        createDb();
+        chart.getDescription().setEnabled(false);
+        chart.setDrawHoleEnabled(true);
         categories = getCategory();
-
         statistics = new ArrayList<>();
 
 
-        ArrayList<PieEntry> values = addValues(getPurchase());
-        PieDataSet dataSet = new PieDataSet(values, "Election Results");
-        setParameters(dataSet);
+        setValues();
+        recyclerView = v.findViewById(R.id.legend);
+        adapter = new AnalysisAdapter(statistics, dataSet.getColors());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(v.getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
 
         return v;
     }
 
-    public class StatisticsByCategotY {
-        private String name;
-        private float cost;
-
-        public StatisticsByCategotY(String name) {
-            this.name = name;
-            cost = 0;
+    private void setStartBeginDate() {
+        Date date = new Date(d.getMinDate());
+        try {
+            date = new AddMinDateAsyncTask(databasePurchase).execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
-        public void addCost(float cost) {
-            this.cost += cost;
-        }
+        dateBeginText.setText(DateUtils.formatDateTime(v.getContext(),
+                date.getTime(),
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
+    }
 
-        public float getCost() {
-            return cost;
-        }
+    private void setStartEndDate() {
+        dateEndText.setText(DateUtils.formatDateTime(v.getContext(),
+                dateEnd.getTime(),
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
 
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public void setCost(float cost) {
-            this.cost = cost;
-        }
+    }
 
 
+    private void setColors(PieDataSet dataSet) {
+        ArrayList<Integer> colors = new ArrayList<>();
+
+        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.JOYFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.COLORFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.LIBERTY_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.PASTEL_COLORS)
+            colors.add(c);
+
+        colors.add(ColorTemplate.getHoloBlue());
+        dataSet.setColors(colors);
+    }
+
+
+    private void setValues() {
+        ArrayList<PieEntry> values = addValues(getPurchase());
+        dataSet = new PieDataSet(values, "Election Results");
+        setParameters(dataSet);
+        chart.invalidate();
     }
 
     private List<Category> getCategory() {
@@ -131,8 +172,8 @@ public class AnalysisFragment extends Fragment {
     private void setStatisticsCategory() {
 
         for (Category category : categories) {
-            StatisticsByCategotY statisticsByCategotY = new StatisticsByCategotY(category.getName());
-            statistics.add(statisticsByCategotY);
+            StatisticsByCategory statisticsByCategory = new StatisticsByCategory(category.getName());
+            statistics.add(statisticsByCategory);
         }
 
     }
@@ -140,7 +181,7 @@ public class AnalysisFragment extends Fragment {
     private List<Purchase> getPurchase() {//добавить даты
 
         try {
-            return new GetPurchaseAsyncTask(databasePurchase).execute().get();
+            return new GetPurchaseAsyncTask(databasePurchase, dateBegin, dateEnd).execute().get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -151,22 +192,30 @@ public class AnalysisFragment extends Fragment {
     }
 
     private ArrayList<PieEntry> addValues(List<Purchase> purchases) {
+        statistics.clear();
         setStatisticsCategory();
         for (Purchase purchase : purchases) {
             List<Product> products = purchase.getItems();
             for (Product product : products) {
-                for (StatisticsByCategotY stat : statistics) {
+                for (StatisticsByCategory stat : statistics) {
                     if (product.getCategory().getName().equals(stat.getName()))
                         stat.addCost(product.getSum() / 100);
                 }
             }
         }
 
-
         ArrayList<PieEntry> values = new ArrayList<>();
-        for (StatisticsByCategotY stat : statistics) {
-            values.add(new PieEntry(stat.getCost(), stat.getName()));
+
+
+        List<StatisticsByCategory> newStat = new ArrayList<>();
+        for (StatisticsByCategory stat : statistics) {
+            if (stat.getCost() != 0) {
+                values.add(new PieEntry(stat.getCost(), stat.getName()));
+            } else newStat.add(stat);
         }
+
+
+        statistics.removeAll(newStat);
         return values;
 
     }
@@ -179,48 +228,35 @@ public class AnalysisFragment extends Fragment {
         data.setValueFormatter(new PercentFormatter());
         chart.setData(data);
 
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        chart.setExtraTopOffset(2f);
+        setColors(dataSet);
         data.setValueTextSize(13f);
         data.setValueTextColor(Color.DKGRAY);
-
-        chart.getDescription().setEnabled(false);
-        chart.setDrawHoleEnabled(true);
-
         chart.setTransparentCircleColor(Color.WHITE);
 
         chart.setTransparentCircleAlpha(110);//прозрачная область в центре
         chart.setTransparentCircleRadius(61f);//величина прозрачной области = это значение - радиус "дырки"
-        chart.setHoleRadius(58f);
-    }
-
-    private void setLegends() {
-        Legend l = chart.getLegend();
-
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
-
-        l.setDrawInside(false);
-        l.setXEntrySpace(7f);
-        l.setYEntrySpace(0f);
-        l.setYOffset(0f);
+        chart.setHoleRadius(54f);
+        chart.getLegend().setEnabled(false);
     }
 
     // отображаем диалоговое окно для выбора даты
     public void setDateBegin(View v) {
         new DatePickerDialog(v.getContext(), begin,
-                dateAndTime.get(Calendar.YEAR),
-                dateAndTime.get(Calendar.MONTH),
-                dateAndTime.get(Calendar.DAY_OF_MONTH))
+                calendarBegin.get(Calendar.YEAR),
+                calendarBegin.get(Calendar.MONTH),
+                calendarBegin.get(Calendar.DAY_OF_MONTH))
                 .show();
+
     }
 
     public void setDateEnd(View v) {
         new DatePickerDialog(v.getContext(), end,
-                dateAndTime.get(Calendar.YEAR),
-                dateAndTime.get(Calendar.MONTH),
-                dateAndTime.get(Calendar.DAY_OF_MONTH))
+                calendarEnd.get(Calendar.YEAR),
+                calendarEnd.get(Calendar.MONTH),
+                calendarEnd.get(Calendar.DAY_OF_MONTH))
                 .show();
+
     }
 
 
@@ -228,33 +264,43 @@ public class AnalysisFragment extends Fragment {
     private void setInitialDateBegin() {
 
         dateBeginText.setText(DateUtils.formatDateTime(v.getContext(),
-                dateAndTime.getTimeInMillis(),
+                calendarBegin.getTimeInMillis(),
                 DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
+        dateBegin = calendarBegin.getTime();
+        setValues();
+        adapter.notifyDataSetChanged();
+
     }
 
     private void setInitialDateEnd() {
 
         dateEndText.setText(DateUtils.formatDateTime(v.getContext(),
-                dateAndTime.getTimeInMillis(),
+                calendarEnd.getTimeInMillis(),
                 DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
+        dateEnd = calendarEnd.getTime();
+        setValues();
+        adapter.notifyDataSetChanged();
     }
 
 
     // установка обработчика выбора даты
     DatePickerDialog.OnDateSetListener begin = new DatePickerDialog.OnDateSetListener() {
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            dateAndTime.set(Calendar.YEAR, year);
-            dateAndTime.set(Calendar.MONTH, monthOfYear);
-            dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            calendarBegin.set(Calendar.YEAR, year);
+            calendarBegin.set(Calendar.MONTH, monthOfYear);
+            calendarBegin.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             setInitialDateBegin();
+
         }
     };
 
     DatePickerDialog.OnDateSetListener end = new DatePickerDialog.OnDateSetListener() {
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            dateAndTime.set(Calendar.YEAR, year);
-            dateAndTime.set(Calendar.MONTH, monthOfYear);
-            dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            calendarEnd.set(Calendar.YEAR, year);
+            calendarEnd.set(Calendar.MONTH, monthOfYear);
+            calendarEnd.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            calendarEnd.set(Calendar.HOUR_OF_DAY, 23);
+            calendarEnd.set(Calendar.MINUTE, 59);
             setInitialDateEnd();
         }
     };
