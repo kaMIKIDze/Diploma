@@ -158,7 +158,13 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         addCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkPermissionsAndOpenFilePicker();
+                try {
+                    checkPermissionsAndOpenFilePicker();
+                } catch (Exception e) {
+                    Toast.makeText(CreatePurchaseActivity.this, "Нет категории, требуется создать новую категорию",
+                            Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
