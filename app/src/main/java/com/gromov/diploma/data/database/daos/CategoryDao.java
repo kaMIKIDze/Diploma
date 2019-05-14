@@ -11,7 +11,7 @@ import java.util.List;
 
 @Dao
 public interface CategoryDao {
-    @Query("SELECT * FROM category")
+    @Query("SELECT * FROM category WHERE id > 0")
     List<Category> getAllCategory();
 
     @Query("SELECT * FROM category WHERE id IN (:Id)")

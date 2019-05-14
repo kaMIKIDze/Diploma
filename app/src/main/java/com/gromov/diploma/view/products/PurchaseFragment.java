@@ -77,6 +77,7 @@ public class PurchaseFragment extends Fragment {
     public void createDb() {
         Context context = getContext();
         databasePurchase = DatabasePurchase.getInstanse(context);
+
     }
 
     @Override
