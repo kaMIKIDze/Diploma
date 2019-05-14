@@ -153,6 +153,7 @@ public class AnalysisFragment extends Fragment {
     private void setValues() {
         ArrayList<PieEntry> values = addValues(getPurchase());
         dataSet = new PieDataSet(values, "Election Results");
+        if (values.size() == 0) chart.setCenterText("Нет данных");
         setParameters(dataSet);
         chart.invalidate();
     }
