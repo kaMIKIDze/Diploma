@@ -20,7 +20,7 @@ public class GetPurchaseAsyncTask extends AsyncTask<Void, Void, List<Purchase>> 
     private PurchaseDao purchaseDao;
     private List<Category> categories;
     private Date dataBegin = new Date(Long.MIN_VALUE);
-    private Date dataEnd = Calendar.getInstance().getTime();;
+    private Date dataEnd = Calendar.getInstance().getTime();
     private boolean flag;
 
 

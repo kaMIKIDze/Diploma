@@ -131,11 +131,16 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         addProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(CreatePurchaseActivity.this, CreateProductActivity.class);
-                i.putExtra("category", String.valueOf(spinnerCategory.getSelectedItem()));
-                i.putExtra("id_category", String.valueOf(getCategoryByName((String) spinnerCategory.getSelectedItem()).getId()));//индексы листа начинаются от 0, а в БД от 1
-                i.putExtra("id_selected_item_spinner", String.valueOf(spinnerCategory.getSelectedItemId()));
-                startActivityForResult(i, REQUEST_CODE_ADD);
+                try {
+                    Intent i = new Intent(CreatePurchaseActivity.this, CreateProductActivity.class);
+                    i.putExtra("category", String.valueOf(spinnerCategory.getSelectedItem()));
+                    i.putExtra("id_category", String.valueOf(getCategoryByName((String) spinnerCategory.getSelectedItem()).getId()));//индексы листа начинаются от 0, а в БД от 1
+                    i.putExtra("id_selected_item_spinner", String.valueOf(spinnerCategory.getSelectedItemId()));
+                    startActivityForResult(i, REQUEST_CODE_ADD);
+                } catch (Exception e){
+                    Toast.makeText(CreatePurchaseActivity.this, "Нет категории, требуется создать новую категорию",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
