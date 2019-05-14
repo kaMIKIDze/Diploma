@@ -4,9 +4,13 @@ import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -16,6 +20,7 @@ import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,12 +33,15 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.gromov.diploma.R;
 import com.gromov.diploma.data.async.AddPurchaseAsyncTask;
+import com.gromov.diploma.data.async.DeleteCategoryAsyncTask;
+import com.gromov.diploma.data.async.DeleteProductAsyncTask;
 import com.gromov.diploma.data.async.GetCategoryAsyncTask;
 import com.gromov.diploma.data.database.database.DatabasePurchase;
 import com.gromov.diploma.data.database.entities.Category;
 import com.gromov.diploma.data.database.entities.Product;
 import com.gromov.diploma.data.database.entities.Purchase;
 import com.gromov.diploma.data.storage.FileSystem;
+import com.gromov.diploma.view.category.CategorySwipeController;
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
@@ -67,6 +75,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
     private FloatingActionButton addCheck;
     private Button dateButton;
     private Date date = calendar.getTime();
+    private CoordinatorLayout coordinatorLayout;
 
 
     @Override
@@ -77,6 +86,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         createDb();
         createViews();
 
+        enableSwipeToDeleteAndUndo();
         setSupportActionBar(toolbar);
         products = new ArrayList<>();
         getCategories();
@@ -99,6 +109,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         addProduct = findViewById(R.id.create_purchase_fab);
         addCheck = findViewById(R.id.create_purchase_fab_check);
         dateButton = findViewById(R.id.date_button);
+        coordinatorLayout = findViewById(R.id.coordinator_layout);
     }
 
     private Category getCategoryByName(String categoryName) {
@@ -137,7 +148,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
                     i.putExtra("id_category", String.valueOf(getCategoryByName((String) spinnerCategory.getSelectedItem()).getId()));//индексы листа начинаются от 0, а в БД от 1
                     i.putExtra("id_selected_item_spinner", String.valueOf(spinnerCategory.getSelectedItemId()));
                     startActivityForResult(i, REQUEST_CODE_ADD);
-                } catch (Exception e){
+                } catch (Exception e) {
                     Toast.makeText(CreatePurchaseActivity.this, "Нет категории, требуется создать новую категорию",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -208,6 +219,45 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         } else if (requestCode == REQUEST_CODE_EDIT && resultCode == RESULT_OK) {
             ActivityResultEdit(data);
         }
+    }
+
+    private void enableSwipeToDeleteAndUndo() {
+        CategorySwipeController swipeToDeleteCallback = new CategorySwipeController(this) {
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+
+                final int position = viewHolder.getAdapterPosition();
+                final Product item = mAdapter.getData().get(position);
+
+                mAdapter.removeItem(position);
+
+                Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout, "Item was removed from the list.", Snackbar.LENGTH_LONG);
+                snackbar.addCallback(new Snackbar.Callback() {
+                    @Override
+                    public void onDismissed(Snackbar transientBottomBar, int event) {
+                        if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                            new DeleteProductAsyncTask(item, databasePurchase).execute();
+                        }
+                    }
+                });
+                snackbar.setAction("UNDO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mAdapter.restoreItem(item, position);
+                        recyclerView.scrollToPosition(position);
+                    }
+                });
+
+
+                snackbar.setActionTextColor(Color.YELLOW);
+                snackbar.show();
+
+            }
+        };
+
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
+        itemTouchhelper.attachToRecyclerView(recyclerView);
     }
 
     private void ActivityResultAdd(Intent data) {

@@ -28,7 +28,7 @@ public class CategorySwipeController extends Callback {
     private int intrinsicHeight;
 
 
-    CategorySwipeController(Context context) {
+    public CategorySwipeController(Context context) {
         mContext = context;
         mBackground = new ColorDrawable();
         backgroundColor = Color.parseColor("#b80f0a");
