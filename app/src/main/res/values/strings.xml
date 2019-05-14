@@ -51,6 +51,6 @@
     <string name="total">Итого:</string>
     <string name="currency_unit_rus">р.</string>
     <string name="date_purchase">Date</string>
-    <string name="date_format">MM/dd/yyyy HH:mm:ss</string>
+    <string name="date_format">MM/dd/yyyy</string>
     <string name="pick_date">Выберете дату:</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.gromov.diploma.view.products;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -15,10 +16,13 @@ import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -35,6 +39,7 @@ import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
@@ -53,12 +58,15 @@ public class CreatePurchaseActivity extends AppCompatActivity {
     private AppCompatSpinner spinnerCategory;
     private CreatePurchaseAdapter mAdapter;
     private AppCompatTextView purchaseTotalSum;
+    private Calendar calendar = Calendar.getInstance();
     private double totalSum;
     private int position;
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private FloatingActionButton addProduct;
     private FloatingActionButton addCheck;
+    private Button dateButton;
+    private Date date = calendar.getTime();
 
 
     @Override
@@ -72,6 +80,9 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         products = new ArrayList<>();
         getCategories();
+        dateButton.setText(DateUtils.formatDateTime(this,
+                date.getTime(),
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
 
         embodySpinner();
         embodyRecyclerView();
@@ -87,6 +98,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view_purchase);
         addProduct = findViewById(R.id.create_purchase_fab);
         addCheck = findViewById(R.id.create_purchase_fab_check);
+        dateButton = findViewById(R.id.date_button);
     }
 
     private Category getCategoryByName(String categoryName) {
@@ -109,6 +121,13 @@ public class CreatePurchaseActivity extends AppCompatActivity {
     }
 
     private void setClickListener() {
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDate(v);
+            }
+        });
+
         addProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,6 +146,26 @@ public class CreatePurchaseActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setDate(View v) {
+        new DatePickerDialog(v.getContext(), begin,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH))
+                .show();
+    }
+
+    DatePickerDialog.OnDateSetListener begin = new DatePickerDialog.OnDateSetListener() {
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, monthOfYear);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            dateButton.setText(DateUtils.formatDateTime(CreatePurchaseActivity.this,
+                    calendar.getTimeInMillis(),
+                    DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
+            date = calendar.getTime();
+        }
+    };
 
     private void embodySpinner() {
         String[] categoriesNames = GetStringArray(categories);
@@ -231,7 +270,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
                     purchase.setRetailPlaceAddress(String.valueOf(placeName.getText()));
                 purchase.setItems(products);
                 purchase.setEcashTotalSum((float) totalSum);
-                purchase.setCurrentTime(Calendar.getInstance().getTime());
+                purchase.setCurrentTime(date);
                 new AddPurchaseAsyncTask(databasePurchase, purchase).execute();
                 finish();
 

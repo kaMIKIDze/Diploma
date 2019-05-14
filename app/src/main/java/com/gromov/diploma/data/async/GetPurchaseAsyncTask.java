@@ -48,7 +48,7 @@ public class GetPurchaseAsyncTask extends AsyncTask<Void, Void, List<Purchase>> 
             purchases = purchaseDao.getAllPurshase();
         } else purchases = purchaseDao.findBetweenDates(dataBegin, dataEnd);
 
-        categories = categoryDao.getAllCategory();
+        categories = categoryDao.getAllCategoryByStat();
         for (Purchase purchase : purchases) {
             List<Product> products = productDao.loadAllByOwnerId(purchase.getId());
             for (Product product : products) {

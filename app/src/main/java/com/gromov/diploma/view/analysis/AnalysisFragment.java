@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -289,8 +290,10 @@ public class AnalysisFragment extends Fragment {
             calendarBegin.set(Calendar.YEAR, year);
             calendarBegin.set(Calendar.MONTH, monthOfYear);
             calendarBegin.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            calendarBegin.set(Calendar.HOUR_OF_DAY, 0);
+            calendarBegin.set(Calendar.MINUTE, 0);
             setInitialDateBegin();
-
+            Log.i("Time", String.valueOf(calendarBegin.getTime()));
         }
     };
 
