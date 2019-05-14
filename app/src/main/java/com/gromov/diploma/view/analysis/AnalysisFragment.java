@@ -152,8 +152,8 @@ public class AnalysisFragment extends Fragment {
 
     private void setValues() {
         ArrayList<PieEntry> values = addValues(getPurchase());
-        dataSet = new PieDataSet(values, "Election Results");
-        if (values.size() == 0) chart.setCenterText("Нет данных");
+        dataSet = new PieDataSet(values, "");
+        if (values.size() == 0) chart.setCenterText(getString(R.string.center_text));
         setParameters(dataSet);
         chart.invalidate();
     }
@@ -262,7 +262,6 @@ public class AnalysisFragment extends Fragment {
     }
 
 
-    // установка  даты и времени
     private void setInitialDateBegin() {
 
         dateBeginText.setText(DateUtils.formatDateTime(v.getContext(),
@@ -294,7 +293,6 @@ public class AnalysisFragment extends Fragment {
             calendarBegin.set(Calendar.HOUR_OF_DAY, 0);
             calendarBegin.set(Calendar.MINUTE, 0);
             setInitialDateBegin();
-            Log.i("Time", String.valueOf(calendarBegin.getTime()));
         }
     };
 

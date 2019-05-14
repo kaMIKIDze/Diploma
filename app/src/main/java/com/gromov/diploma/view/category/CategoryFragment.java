@@ -69,7 +69,7 @@ public class CategoryFragment extends Fragment {
                 categoryAdapter.removeItem(position);
 
                 Snackbar snackbar = Snackbar
-                        .make(coordinatorLayout, "Item was removed from the list.", Snackbar.LENGTH_LONG);
+                        .make(coordinatorLayout, getString(R.string.cancel_deletion), Snackbar.LENGTH_LONG);
                 snackbar.addCallback(new Snackbar.Callback() {
                     @Override
                     public void onDismissed(Snackbar transientBottomBar, int event) {
@@ -78,7 +78,7 @@ public class CategoryFragment extends Fragment {
                         }
                     }
                 });
-                snackbar.setAction("UNDO", new View.OnClickListener() {
+                snackbar.setAction(getString(R.string.cancel), new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         categoryAdapter.restoreItem(item, position);

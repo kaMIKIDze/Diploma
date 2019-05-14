@@ -53,4 +53,9 @@
     <string name="date_purchase">Date</string>
     <string name="date_format">MM/dd/yyyy</string>
     <string name="pick_date">Выберете дату:</string>
+    <string name="center_text">Выберете дату:</string>
+    <string name="add_product">Добавление продукта</string>
+    <string name="error_category">Нет категории, требуется создать новую категорию</string>
+    <string name="cancel_deletion">Отменить удаление</string>
+    <string name="cancel">Отменить</string>
 </resources>

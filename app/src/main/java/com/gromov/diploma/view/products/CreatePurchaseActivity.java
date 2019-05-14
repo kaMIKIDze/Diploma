@@ -149,7 +149,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
                     i.putExtra("id_selected_item_spinner", String.valueOf(spinnerCategory.getSelectedItemId()));
                     startActivityForResult(i, REQUEST_CODE_ADD);
                 } catch (Exception e) {
-                    Toast.makeText(CreatePurchaseActivity.this, "Нет категории, требуется создать новую категорию",
+                    Toast.makeText(CreatePurchaseActivity.this, getString(R.string.error_category),
                             Toast.LENGTH_SHORT).show();
                 }
             }
@@ -161,7 +161,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
                 try {
                     checkPermissionsAndOpenFilePicker();
                 } catch (Exception e) {
-                    Toast.makeText(CreatePurchaseActivity.this, "Нет категории, требуется создать новую категорию",
+                    Toast.makeText(CreatePurchaseActivity.this, getString(R.string.error_category),
                             Toast.LENGTH_SHORT).show();
                 }
 
@@ -238,7 +238,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
                 mAdapter.removeItem(position);
 
                 Snackbar snackbar = Snackbar
-                        .make(coordinatorLayout, "Item was removed from the list.", Snackbar.LENGTH_LONG);
+                        .make(coordinatorLayout, getString(R.string.cancel_deletion), Snackbar.LENGTH_LONG);
                 snackbar.addCallback(new Snackbar.Callback() {
                     @Override
                     public void onDismissed(Snackbar transientBottomBar, int event) {
@@ -247,7 +247,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
                         }
                     }
                 });
-                snackbar.setAction("UNDO", new View.OnClickListener() {
+                snackbar.setAction(getString(R.string.cancel), new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         mAdapter.restoreItem(item, position);
