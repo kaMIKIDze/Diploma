@@ -21,14 +21,14 @@ public class GetPurchaseAsyncTask extends AsyncTask<Void, Void, List<Purchase>> 
     private List<Category> categories;
     private Date dataBegin = new Date(Long.MIN_VALUE);
     private Date dataEnd = Calendar.getInstance().getTime();
-    private boolean flag;
+    private boolean isShowFullList;
 
 
     public GetPurchaseAsyncTask(DatabasePurchase databasePurchase) {
         productDao = databasePurchase.productDao();
         categoryDao = databasePurchase.categoryDao();
         purchaseDao = databasePurchase.purchaseDao();
-        flag = true;
+        isShowFullList = true;
     }
 
     public GetPurchaseAsyncTask(DatabasePurchase databasePurchase, Date dataBegin, Date dateEnd) {
@@ -37,14 +37,14 @@ public class GetPurchaseAsyncTask extends AsyncTask<Void, Void, List<Purchase>> 
         purchaseDao = databasePurchase.purchaseDao();
         this.dataBegin = dataBegin;
         this.dataEnd = dateEnd;
-        flag = false;
+        isShowFullList = false;
     }
 
 
     @Override
     protected List<Purchase> doInBackground(Void... voids) {
         List<Purchase> purchases;
-        if (flag) {
+        if (isShowFullList) {
             purchases = purchaseDao.getAllPurshase();
         } else purchases = purchaseDao.findBetweenDates(dataBegin, dataEnd);
 

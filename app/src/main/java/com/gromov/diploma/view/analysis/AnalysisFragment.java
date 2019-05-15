@@ -200,14 +200,12 @@ public class AnalysisFragment extends Fragment {
 
         ArrayList<PieEntry> values = new ArrayList<>();
 
-
         List<StatisticsByCategory> newStat = new ArrayList<>();
         for (StatisticsByCategory stat : statistics) {
             if (stat.getCost() != 0) {
                 values.add(new PieEntry(stat.getCost(), stat.getName()));
             } else newStat.add(stat);
         }
-
 
         statistics.removeAll(newStat);
         return values;
@@ -253,7 +251,6 @@ public class AnalysisFragment extends Fragment {
 
     }
 
-
     private void setInitialDateBegin() {
 
         dateBeginText.setText(DateUtils.formatDateTime(view.getContext(),
@@ -274,7 +271,6 @@ public class AnalysisFragment extends Fragment {
         setValues();
         adapter.notifyDataSetChanged();
     }
-
 
     // установка обработчика выбора даты
     DatePickerDialog.OnDateSetListener begin = new DatePickerDialog.OnDateSetListener() {
@@ -298,7 +294,6 @@ public class AnalysisFragment extends Fragment {
             setInitialDateEnd();
         }
     };
-
 
     public void createDb() {
         Context context = getContext();
