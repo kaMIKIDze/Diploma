@@ -20,6 +20,9 @@ public interface ProductDao {
     @Query("SELECT * FROM product WHERE ownerId IN (:Id)")
     List<Product> loadAllByOwnerId(int Id);
 
+    @Query("UPDATE product SET categoryId = -1 where categoryId IN(:categoryId)")
+    void deleteCategory(int categoryId);
+
     @Insert
     void insertAll(List<Product> products);
 

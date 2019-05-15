@@ -17,8 +17,7 @@ public class GetCategoryAsyncTask extends AsyncTask<Void, Void, List<Category>> 
 
     @Override
     protected List<Category> doInBackground(Void... voids) {
-        List<Category> categories = categoryDao.getAllCategory();
-        return categories;
+        return categoryDao.getAllCategory();
     }
 
     @Override

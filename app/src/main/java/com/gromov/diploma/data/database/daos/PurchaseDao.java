@@ -7,6 +7,7 @@ import android.arch.persistence.room.Query;
 
 import com.gromov.diploma.data.database.entities.Purchase;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -23,4 +24,10 @@ public interface PurchaseDao {
 
     @Delete
     void delete(Purchase purchase);
+
+    @Query("SELECT * FROM purchase WHERE currentTime BETWEEN :from AND :to")
+    List<Purchase> findBetweenDates(Date from, Date to);
+
+    @Query("SELECT MIN(currentTime) FROM purchase")
+    Date findMinDate();
 }

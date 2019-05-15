@@ -1,11 +1,16 @@
 package com.gromov.diploma.view.products;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -15,26 +20,33 @@ import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.gromov.diploma.R;
 import com.gromov.diploma.data.async.AddPurchaseAsyncTask;
+import com.gromov.diploma.data.async.DeleteProductAsyncTask;
 import com.gromov.diploma.data.async.GetCategoryAsyncTask;
 import com.gromov.diploma.data.database.database.DatabasePurchase;
 import com.gromov.diploma.data.database.entities.Category;
 import com.gromov.diploma.data.database.entities.Product;
 import com.gromov.diploma.data.database.entities.Purchase;
 import com.gromov.diploma.data.storage.FileSystem;
+import com.gromov.diploma.view.category.CategorySwipeController;
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 import com.nbsp.materialfilepicker.ui.FilePickerActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
@@ -53,12 +65,16 @@ public class CreatePurchaseActivity extends AppCompatActivity {
     private AppCompatSpinner spinnerCategory;
     private CreatePurchaseAdapter mAdapter;
     private AppCompatTextView purchaseTotalSum;
+    private Calendar calendar = Calendar.getInstance();
     private double totalSum;
     private int position;
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private FloatingActionButton addProduct;
     private FloatingActionButton addCheck;
+    private Button dateButton;
+    private Date date = calendar.getTime();
+    private CoordinatorLayout coordinatorLayout;
 
 
     @Override
@@ -66,12 +82,16 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_purchase);
 
-        createDb();
+        initDatabase();
         createViews();
 
+        enableSwipeToDeleteAndUndo();
         setSupportActionBar(toolbar);
         products = new ArrayList<>();
         getCategories();
+        dateButton.setText(DateUtils.formatDateTime(this,
+                date.getTime(),
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
 
         embodySpinner();
         embodyRecyclerView();
@@ -87,6 +107,8 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view_purchase);
         addProduct = findViewById(R.id.create_purchase_fab);
         addCheck = findViewById(R.id.create_purchase_fab_check);
+        dateButton = findViewById(R.id.date_button);
+        coordinatorLayout = findViewById(R.id.coordinator_layout);
     }
 
     private Category getCategoryByName(String categoryName) {
@@ -109,24 +131,62 @@ public class CreatePurchaseActivity extends AppCompatActivity {
     }
 
     private void setClickListener() {
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDate(v);
+            }
+        });
+
         addProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(CreatePurchaseActivity.this, CreateProductActivity.class);
-                i.putExtra("category", String.valueOf(spinnerCategory.getSelectedItem()));
-                i.putExtra("id_category", String.valueOf(getCategoryByName((String) spinnerCategory.getSelectedItem()).getId()));//индексы листа начинаются от 0, а в БД от 1
-                i.putExtra("id_selected_item_spinner", String.valueOf(spinnerCategory.getSelectedItemId()));
-                startActivityForResult(i, REQUEST_CODE_ADD);
+                try {
+                    Intent i = new Intent(CreatePurchaseActivity.this, CreateProductActivity.class);
+                    i.putExtra("category", String.valueOf(spinnerCategory.getSelectedItem()));
+                    i.putExtra("id_category", String.valueOf(getCategoryByName((String) spinnerCategory.getSelectedItem()).getId()));//индексы листа начинаются от 0, а в БД от 1
+                    i.putExtra("id_selected_item_spinner", String.valueOf(spinnerCategory.getSelectedItemId()));
+                    startActivityForResult(i, REQUEST_CODE_ADD);
+                } catch (Exception e) {
+                    Toast.makeText(CreatePurchaseActivity.this, getString(R.string.error_category),
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         addCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkPermissionsAndOpenFilePicker();
+                try {
+                    checkPermissionsAndOpenFilePicker();
+                } catch (Exception e) {
+                    Toast.makeText(CreatePurchaseActivity.this, getString(R.string.error_category),
+                            Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
+
+    private void setDate(View v) {
+        new DatePickerDialog(v.getContext(), begin,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH))
+                .show();
+    }
+
+    DatePickerDialog.OnDateSetListener begin = new DatePickerDialog.OnDateSetListener() {
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, monthOfYear);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            dateButton.setText(DateUtils.formatDateTime(CreatePurchaseActivity.this,
+                    calendar.getTimeInMillis(),
+                    DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
+            date = calendar.getTime();
+        }
+    };
 
     private void embodySpinner() {
         String[] categoriesNames = GetStringArray(categories);
@@ -164,6 +224,45 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         } else if (requestCode == REQUEST_CODE_EDIT && resultCode == RESULT_OK) {
             ActivityResultEdit(data);
         }
+    }
+
+    private void enableSwipeToDeleteAndUndo() {
+        CategorySwipeController swipeToDeleteCallback = new CategorySwipeController(this) {
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+
+                final int position = viewHolder.getAdapterPosition();
+                final Product item = mAdapter.getData().get(position);
+
+                mAdapter.removeItem(position);
+
+                Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout, getString(R.string.cancel_deletion), Snackbar.LENGTH_LONG);
+                snackbar.addCallback(new Snackbar.Callback() {
+                    @Override
+                    public void onDismissed(Snackbar transientBottomBar, int event) {
+                        if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                            new DeleteProductAsyncTask(item, databasePurchase).execute();
+                        }
+                    }
+                });
+                snackbar.setAction(getString(R.string.cancel), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mAdapter.restoreItem(item, position);
+                        recyclerView.scrollToPosition(position);
+                    }
+                });
+
+
+                snackbar.setActionTextColor(Color.YELLOW);
+                snackbar.show();
+
+            }
+        };
+
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
+        itemTouchhelper.attachToRecyclerView(recyclerView);
     }
 
     private void ActivityResultAdd(Intent data) {
@@ -231,7 +330,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
                     purchase.setRetailPlaceAddress(String.valueOf(placeName.getText()));
                 purchase.setItems(products);
                 purchase.setEcashTotalSum((float) totalSum);
-                purchase.setCurrentTime(Calendar.getInstance().getTime());
+                purchase.setCurrentTime(date);
                 new AddPurchaseAsyncTask(databasePurchase, purchase).execute();
                 finish();
 
@@ -281,7 +380,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
     }
 
 
-    public void createDb() {
+    public void initDatabase() {
         databasePurchase = DatabasePurchase.getInstanse(this);
     }
 }

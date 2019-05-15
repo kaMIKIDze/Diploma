@@ -51,5 +51,12 @@
     <string name="total">Итого:</string>
     <string name="currency_unit_rus">р.</string>
     <string name="date_purchase">Date</string>
-    <string name="date_format">MM/dd/yyyy HH:mm:ss</string>
+    <string name="date_format">MM/dd/yyyy</string>
+    <string name="pick_date">Выберете дату:</string>
+    <string name="center_text">Нет данных</string>
+    <string name="add_product">Добавление продукта</string>
+    <string name="error_category">Нет категории, требуется создать новую категорию</string>
+    <string name="cancel_deletion">Отменить удаление</string>
+    <string name="cancel">Отменить</string>
+    <string name="unknown">Неизвестно</string>
 </resources>

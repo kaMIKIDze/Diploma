@@ -22,7 +22,7 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.MyView
     View v;
 
 
-    public PurchaseAdapter(List<Purchase> purchases) {
+    PurchaseAdapter(List<Purchase> purchases) {
         this.purchases = purchases;
     }
 

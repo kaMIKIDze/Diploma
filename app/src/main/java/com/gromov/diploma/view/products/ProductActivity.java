@@ -41,7 +41,7 @@ public abstract class ProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_product);
         idParentCategory = Integer.parseInt(Objects.requireNonNull(getIntent().getExtras().getString("id_category")));
 
-        createDb();
+        initDatabase();
         createViews();
         setViews();
     }
@@ -162,7 +162,7 @@ public abstract class ProductActivity extends AppCompatActivity {
     }
 
 
-    public void createDb() {
+    public void initDatabase() {
         databasePurchase = DatabasePurchase.getInstanse(this);
     }
 }

@@ -29,7 +29,7 @@ public class CreateCategoryActivity extends Activity {
         nameCategory = findViewById(R.id.edit_name_category);
         required = findViewById(R.id.quantity_radio);
         required.setChecked(true);
-        createDb();
+        initDatabase();
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +46,7 @@ public class CreateCategoryActivity extends Activity {
     }
 
 
-    public void createDb() {
+    public void initDatabase() {
         databasePurchase = DatabasePurchase.getInstanse(this);
     }
 }
