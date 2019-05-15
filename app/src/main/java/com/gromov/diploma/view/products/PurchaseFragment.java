@@ -41,7 +41,7 @@ public class PurchaseFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.purchase_fragment, container, false);
 
-
+        getActivity().setTitle(getString(R.string.purchase));
         FloatingActionButton loadFileBtn = view.findViewById(R.id.fab);
         loadFileBtn.setOnClickListener(new View.OnClickListener() {
             @Override

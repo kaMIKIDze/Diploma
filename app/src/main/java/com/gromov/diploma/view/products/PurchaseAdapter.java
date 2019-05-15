@@ -62,12 +62,12 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int pos) {
+
         Purchase purchase = purchases.get(pos);
         myViewHolder.textViewName.setText(purchase.getRetailPlaceAddress());
-        myViewHolder.textViewSum.setText(v.getContext().getString(R.string.total) + String.valueOf(purchase.getEcashTotalSum() / 100));
+        myViewHolder.textViewSum.setText(v.getContext().getString(R.string.total) + " " + String.valueOf(purchase.getEcashTotalSum() / 100));
         DateFormat df = new SimpleDateFormat(v.getContext().getString(R.string.date_format));
         String reportDate = df.format(purchase.getCurrentTime());
-
 
         myViewHolder.textViewDate.setText(reportDate);
         List<Product> products = purchase.getItems();

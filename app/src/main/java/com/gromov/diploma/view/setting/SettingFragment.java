@@ -15,6 +15,7 @@ public class SettingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        getActivity().setTitle(getString(R.string.setting));
         return inflater.inflate(R.layout.fragment_setting, container, false);
     }
 

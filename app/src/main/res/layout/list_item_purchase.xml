@@ -38,7 +38,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/date_purchase"
                 android:layout_weight="0.4"
-                android:maxLines="1"/>
+                android:maxLines="1"
+                android:textAlignment="textEnd"/>
 
         </LinearLayout>
 
@@ -64,7 +65,8 @@
                 android:ellipsize="end"
                 android:text="@string/list_items"
                 android:textColor="#555"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:maxLines="1"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -72,7 +74,9 @@
                 android:layout_weight="0.2"
                 android:text="@string/quantity"
                 android:textColor="#555"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:ellipsize="end"
+                android:maxLines="1"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -80,7 +84,9 @@
                 android:layout_weight="0.2"
                 android:text="@string/item_price"
                 android:textColor="#555"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:ellipsize="end"
+                android:maxLines="1"/>
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView

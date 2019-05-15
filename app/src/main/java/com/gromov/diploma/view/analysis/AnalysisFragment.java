@@ -63,6 +63,7 @@ public class AnalysisFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_analysis, container, false);
+        getActivity().setTitle(R.string.analysis);
         initDatabase();
         dateBeginText = view.findViewById(R.id.time_begin);
         setStartBeginDate();

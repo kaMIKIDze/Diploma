@@ -42,6 +42,8 @@ public class CategoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_category, container, false);
+        getActivity().setTitle(getString(R.string.category));
+
 
         initDatabase();
         createViews();
