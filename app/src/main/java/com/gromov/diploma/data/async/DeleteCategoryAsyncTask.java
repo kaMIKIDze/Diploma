@@ -22,7 +22,7 @@ public class DeleteCategoryAsyncTask extends AsyncTask {
 
     @Override
     protected Object doInBackground(Object[] objects) {
-        productDao.updateCategory(category.getId());
+        productDao.deleteCategory(category.getId());
         categoryDao.delete(category);
         return null;
     }

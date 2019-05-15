@@ -21,7 +21,7 @@ public interface ProductDao {
     List<Product> loadAllByOwnerId(int Id);
 
     @Query("UPDATE product SET categoryId = -1 where categoryId IN(:categoryId)")
-    void updateCategory(int categoryId);
+    void deleteCategory(int categoryId);
 
     @Insert
     void insertAll(List<Product> products);

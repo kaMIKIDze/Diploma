@@ -12,7 +12,7 @@ import com.gromov.diploma.R;
 
 import java.util.List;
 
-public class AnalysisAdapter extends RecyclerView.Adapter<AnalysisAdapter.MyViewHolder> {
+public class AnalysisAdapter extends RecyclerView.Adapter<AnalysisAdapter.ViewHolder> {
     private List<StatisticsByCategory> statistics;
     private List<Integer> colors;
 
@@ -23,15 +23,15 @@ public class AnalysisAdapter extends RecyclerView.Adapter<AnalysisAdapter.MyView
 
     @NonNull
     @Override
-    public AnalysisAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+    public AnalysisAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_legend, parent, false);
 
-        return new AnalysisAdapter.MyViewHolder(v);
+        return new AnalysisAdapter.ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AnalysisAdapter.MyViewHolder myViewHolder, int i) {
+    public void onBindViewHolder(@NonNull AnalysisAdapter.ViewHolder myViewHolder, int i) {
         myViewHolder.bind(i);
     }
 
@@ -40,13 +40,13 @@ public class AnalysisAdapter extends RecyclerView.Adapter<AnalysisAdapter.MyView
         return statistics.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
        private ImageView icon;
        private TextView name;
        private TextView cost;
 
 
-        public MyViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             icon=itemView.findViewById(R.id.legend_icon);
             name=itemView.findViewById(R.id.legend_item_name);

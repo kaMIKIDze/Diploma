@@ -1,25 +1,20 @@
 package com.gromov.diploma.view.analysis;
 
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.TimePicker;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -45,17 +40,15 @@ public class AnalysisFragment extends Fragment {
 
     private PieChart chart;
     private DatabasePurchase databasePurchase;
-    private List<StatisticsByCategory> statistics;
+    private List<StatisticsByCategory> statistics = new ArrayList<>();
     private List<Category> categories;
-    private View v;
+    private View view;
     private Calendar calendarBegin = Calendar.getInstance();
     private Calendar calendarEnd = Calendar.getInstance();
     private Date dateBegin;
     private Date dateEnd = Calendar.getInstance().getTime();
     private Button dateBeginText;
     private Button dateEndText;
-    private DatePicker d;
-    private RecyclerView recyclerView;
     private AnalysisAdapter adapter;
     private PieDataSet dataSet;
 
@@ -63,11 +56,9 @@ public class AnalysisFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        v = inflater.inflate(R.layout.fragment_analysis, container, false);
+        view = inflater.inflate(R.layout.fragment_analysis, container, false);
         createDb();
-        d = new DatePicker(v.getContext());//??
-        dateBegin = new Date(d.getMinDate());
-        dateBeginText = v.findViewById(R.id.time_begin);
+        dateBeginText = view.findViewById(R.id.time_begin);
         setStartBeginDate();
 
         dateBeginText.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +68,7 @@ public class AnalysisFragment extends Fragment {
             }
         });
 
-        dateEndText = v.findViewById(R.id.time_end);
+        dateEndText = view.findViewById(R.id.time_end);
         setStartEndDate();
         dateEndText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,42 +76,43 @@ public class AnalysisFragment extends Fragment {
                 setDateEnd(v);
             }
         });
-        chart = v.findViewById(R.id.piechart);
+        chart = view.findViewById(R.id.piechart);
         chart.setUsePercentValues(true);
 
         chart.getDescription().setEnabled(false);
         chart.setDrawHoleEnabled(true);
         categories = getCategory();
-        statistics = new ArrayList<>();
-
 
         setValues();
-        recyclerView = v.findViewById(R.id.legend);
+        RecyclerView recyclerView = view.findViewById(R.id.legend);
         adapter = new AnalysisAdapter(statistics, dataSet.getColors());
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(v.getContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-        return v;
+        return view;
     }
 
     private void setStartBeginDate() {
-        Date date = new Date(d.getMinDate());
+        dateBegin = new Date();
         try {
-            date = new AddMinDateAsyncTask(databasePurchase).execute().get();
+            dateBegin = new AddMinDateAsyncTask(databasePurchase).execute().get();
+            if (dateBegin == null) {
+                dateBegin = dateEnd;
+            }
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        dateBeginText.setText(DateUtils.formatDateTime(v.getContext(),
-                date.getTime(),
+        dateBeginText.setText(DateUtils.formatDateTime(view.getContext(),
+                dateBegin.getTime(),
                 DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
     }
 
     private void setStartEndDate() {
-        dateEndText.setText(DateUtils.formatDateTime(v.getContext(),
+        dateEndText.setText(DateUtils.formatDateTime(view.getContext(),
                 dateEnd.getTime(),
                 DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
 
@@ -180,7 +172,7 @@ public class AnalysisFragment extends Fragment {
 
     }
 
-    private List<Purchase> getPurchase() {//добавить даты
+    private List<Purchase> getPurchase() {
 
         try {
             return new GetPurchaseAsyncTask(databasePurchase, dateBegin, dateEnd).execute().get();
@@ -264,7 +256,7 @@ public class AnalysisFragment extends Fragment {
 
     private void setInitialDateBegin() {
 
-        dateBeginText.setText(DateUtils.formatDateTime(v.getContext(),
+        dateBeginText.setText(DateUtils.formatDateTime(view.getContext(),
                 calendarBegin.getTimeInMillis(),
                 DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
         dateBegin = calendarBegin.getTime();
@@ -275,7 +267,7 @@ public class AnalysisFragment extends Fragment {
 
     private void setInitialDateEnd() {
 
-        dateEndText.setText(DateUtils.formatDateTime(v.getContext(),
+        dateEndText.setText(DateUtils.formatDateTime(view.getContext(),
                 calendarEnd.getTimeInMillis(),
                 DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
         dateEnd = calendarEnd.getTime();
