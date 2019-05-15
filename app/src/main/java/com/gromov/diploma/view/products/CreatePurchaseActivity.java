@@ -21,13 +21,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.SpannableString;
 import android.text.format.DateUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -254,7 +257,6 @@ public class CreatePurchaseActivity extends AppCompatActivity {
                     }
                 });
 
-
                 snackbar.setActionTextColor(Color.YELLOW);
                 snackbar.show();
 
@@ -314,6 +316,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.create_purchase_menu, menu);
+        //SpannableString s = new SpannableString("My red MenuItem"); s.setSpan(new ForegroundColorSpan(Color.RED), 0, s.length(), 0);
         return true;
     }
 

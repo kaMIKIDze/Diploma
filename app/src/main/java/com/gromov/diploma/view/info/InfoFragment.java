@@ -16,7 +16,9 @@ public class InfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        getActivity().setTitle(getString(R.string.analysis));
         return inflater.inflate(R.layout.fragment_info, container, false);
+
     }
 
 }

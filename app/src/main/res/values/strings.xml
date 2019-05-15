@@ -11,22 +11,20 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="home">Home</string>
-    <string name="setting">Setting</string>
-    <string name="info">Info</string>
-    <string name="analysis">Analysis</string>
-    <string name="category">Category</string>
-    <string name="purchase_text" />
-    <string name="plase_name">PlaseName</string>
-    <string name="items">Items:</string>
-    <string name="list_items">Items</string>
-    <string name="place_name">PlaceName</string>
-    <string name="sum">Sum</string>
-    <string name="price">Итого:</string>
-    <string name="quantity">Quantity</string>
-    <string name="item_price">Price</string>
-    <string name="category_name_text">Category</string>
-    <string name="category_text_card">Category</string>
+    <string name="home">Домашняя страница</string>
+    <string name="setting">Настройки</string>
+    <string name="info">Информация</string>
+    <string name="analysis">Анализ</string>
+    <string name="category">Категории</string>
+    <string name="items">Товары:</string>
+    <string name="list_items">Товары</string>
+    <string name="place_name">Название Магазина</string>
+    <string name="sum">Сумма</string>
+    <string name="price">Итого: </string>
+    <string name="quantity">Количество</string>
+    <string name="item_price">Цена</string>
+    <string name="category_name_text">Категория</string>
+    <string name="category_text_card">Категория</string>
     <string name="create_category">Constructor</string>
     <string name="name_category">Наименование</string>
     <string name="first_radio_text">Обязательные</string>
@@ -41,17 +39,17 @@
     <string name="cost_product">Цена за ед. товара:</string>
     <string name="product_total_sum">Итоговая сумма:</string>
     <string name="purchase_total_sum">Итого:</string>
-    <string name="error_product_name">you must enter a product name</string>
-    <string name="error_product_cost">you must enter a product cost</string>
-    <string name="error_product_count">you must enter a product count</string>
+    <string name="error_product_name">Требуется ввести название продукта</string>
+    <string name="error_product_cost">Требуется ввести стоимость продукта</string>
+    <string name="error_product_count">Требуется ввести количество продукта</string>
     <string name="with_sum_product">%.1f р.</string>
-    <string name="error_place_name">you must enter a value to converted</string>
-    <string name="error_reading_storage">Allow external storage reading</string>
+    <string name="error_place_name">Нужно заполнить все поля</string>
+    <string name="error_reading_storage">Нет достпа к памяти смартфона</string>
     <string name="with_sum_and_quan">%.1f x %.1f</string>
     <string name="total">Итого:</string>
     <string name="currency_unit_rus">р.</string>
-    <string name="date_purchase">Date</string>
-    <string name="date_format">MM/dd/yyyy</string>
+    <string name="date_purchase">Дата</string>
+    <string name="date_format">dd/MM/yyyy</string>
     <string name="pick_date">Выберете дату:</string>
     <string name="center_text">Нет данных</string>
     <string name="add_product">Добавление продукта</string>
@@ -59,4 +57,5 @@
     <string name="cancel_deletion">Отменить удаление</string>
     <string name="cancel">Отменить</string>
     <string name="unknown">Неизвестно</string>
+    <string name="purchase">Продукты</string>
 </resources>
