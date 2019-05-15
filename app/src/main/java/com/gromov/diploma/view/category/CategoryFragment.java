@@ -43,7 +43,7 @@ public class CategoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_category, container, false);
 
-        createDb();
+        initDatabase();
         createViews();
         getCategories();
 
@@ -133,9 +133,8 @@ public class CategoryFragment extends Fragment {
 
     }
 
-    public void createDb() {
-        Context context = getContext();
-        databasePurchase = DatabasePurchase.getInstanse(context);
+    public void initDatabase() {
+        databasePurchase = DatabasePurchase.getInstanse(getContext());
     }
 
 }

@@ -60,7 +60,7 @@ public class GetPurchaseAsyncTask extends AsyncTask<Void, Void, List<Purchase>> 
         return purchases;
     }
 
-    public Category getCategoryById(int categoryId) {
+    private Category getCategoryById(int categoryId) {
         for (Category category : categories) {
             if (category.getId() == categoryId) return category;
         }

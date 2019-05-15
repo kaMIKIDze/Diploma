@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 
@@ -51,15 +53,21 @@ public class AnalysisFragment extends Fragment {
     private Button dateEndText;
     private AnalysisAdapter adapter;
     private PieDataSet dataSet;
+    private DatePickerDialog.OnDateSetListener beginDateSetListener;
+    private DatePickerDialog.OnDateSetListener endDateSetListener;
+
+
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_analysis, container, false);
-        createDb();
+        initDatabase();
         dateBeginText = view.findViewById(R.id.time_begin);
         setStartBeginDate();
+
+        createDateSetListener();
 
         dateBeginText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +75,6 @@ public class AnalysisFragment extends Fragment {
                 setDateBegin(v);
             }
         });
-
         dateEndText = view.findViewById(R.id.time_end);
         setStartEndDate();
         dateEndText.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +99,33 @@ public class AnalysisFragment extends Fragment {
 
         return view;
     }
+
+
+    private void createDateSetListener(){
+        // установка обработчика выбора даты
+        beginDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                calendarBegin.set(Calendar.YEAR, year);
+                calendarBegin.set(Calendar.MONTH, monthOfYear);
+                calendarBegin.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                calendarBegin.set(Calendar.HOUR_OF_DAY, 0);
+                calendarBegin.set(Calendar.MINUTE, 0);
+                setInitialDateBegin();
+            }
+        };
+
+        endDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                calendarEnd.set(Calendar.YEAR, year);
+                calendarEnd.set(Calendar.MONTH, monthOfYear);
+                calendarEnd.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                calendarEnd.set(Calendar.HOUR_OF_DAY, 23);
+                calendarEnd.set(Calendar.MINUTE, 59);
+                setInitialDateEnd();
+            }
+        };
+    }
+
 
     private void setStartBeginDate() {
         dateBegin = new Date();
@@ -143,7 +177,7 @@ public class AnalysisFragment extends Fragment {
 
 
     private void setValues() {
-        ArrayList<PieEntry> values = addValues(getPurchase());
+        ArrayList<PieEntry> values = addValues(Objects.requireNonNull(getPurchase()));
         dataSet = new PieDataSet(values, "");
         if (values.size() == 0) chart.setCenterText(getString(R.string.center_text));
         setParameters(dataSet);
@@ -234,7 +268,7 @@ public class AnalysisFragment extends Fragment {
 
     // отображаем диалоговое окно для выбора даты
     public void setDateBegin(View v) {
-        new DatePickerDialog(v.getContext(), begin,
+        new DatePickerDialog(v.getContext(), beginDateSetListener,
                 calendarBegin.get(Calendar.YEAR),
                 calendarBegin.get(Calendar.MONTH),
                 calendarBegin.get(Calendar.DAY_OF_MONTH))
@@ -243,7 +277,7 @@ public class AnalysisFragment extends Fragment {
     }
 
     public void setDateEnd(View v) {
-        new DatePickerDialog(v.getContext(), end,
+        new DatePickerDialog(v.getContext(), endDateSetListener,
                 calendarEnd.get(Calendar.YEAR),
                 calendarEnd.get(Calendar.MONTH),
                 calendarEnd.get(Calendar.DAY_OF_MONTH))
@@ -272,32 +306,10 @@ public class AnalysisFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
-    // установка обработчика выбора даты
-    DatePickerDialog.OnDateSetListener begin = new DatePickerDialog.OnDateSetListener() {
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            calendarBegin.set(Calendar.YEAR, year);
-            calendarBegin.set(Calendar.MONTH, monthOfYear);
-            calendarBegin.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            calendarBegin.set(Calendar.HOUR_OF_DAY, 0);
-            calendarBegin.set(Calendar.MINUTE, 0);
-            setInitialDateBegin();
-        }
-    };
 
-    DatePickerDialog.OnDateSetListener end = new DatePickerDialog.OnDateSetListener() {
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            calendarEnd.set(Calendar.YEAR, year);
-            calendarEnd.set(Calendar.MONTH, monthOfYear);
-            calendarEnd.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            calendarEnd.set(Calendar.HOUR_OF_DAY, 23);
-            calendarEnd.set(Calendar.MINUTE, 59);
-            setInitialDateEnd();
-        }
-    };
 
-    public void createDb() {
-        Context context = getContext();
-        databasePurchase = DatabasePurchase.getInstanse(context);
+    public void initDatabase() {
+        databasePurchase = DatabasePurchase.getInstanse(getContext());
     }
 
 }

@@ -33,7 +33,6 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.gromov.diploma.R;
 import com.gromov.diploma.data.async.AddPurchaseAsyncTask;
-import com.gromov.diploma.data.async.DeleteCategoryAsyncTask;
 import com.gromov.diploma.data.async.DeleteProductAsyncTask;
 import com.gromov.diploma.data.async.GetCategoryAsyncTask;
 import com.gromov.diploma.data.database.database.DatabasePurchase;
@@ -83,7 +82,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_purchase);
 
-        createDb();
+        initDatabase();
         createViews();
 
         enableSwipeToDeleteAndUndo();
@@ -381,7 +380,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
     }
 
 
-    public void createDb() {
+    public void initDatabase() {
         databasePurchase = DatabasePurchase.getInstanse(this);
     }
 }

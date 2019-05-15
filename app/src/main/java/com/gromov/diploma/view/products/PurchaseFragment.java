@@ -50,7 +50,7 @@ public class PurchaseFragment extends Fragment {
             }
         });
 
-        createDb();
+        initDatabase();
         recyclerView = view.findViewById(R.id.recycler_view);
         getPurchase();
 
@@ -74,9 +74,8 @@ public class PurchaseFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
     }
 
-    public void createDb() {
-        Context context = getContext();
-        databasePurchase = DatabasePurchase.getInstanse(context);
+    public void initDatabase() {
+        databasePurchase = DatabasePurchase.getInstanse(getContext());
 
     }
 
