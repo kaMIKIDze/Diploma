@@ -4,6 +4,7 @@
     package="com.gromov.diploma">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".DiplomaApp"
@@ -26,6 +27,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="0b69375f187b780b0f4ea8ba74b79a038fde4693"
+            />
     </application>
 
 </manifest>

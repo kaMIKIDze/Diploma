@@ -15,6 +15,9 @@ import com.gromov.diploma.view.category.CategoryFragment;
 import com.gromov.diploma.view.info.InfoFragment;
 import com.gromov.diploma.view.products.PurchaseFragment;
 import com.gromov.diploma.view.setting.SettingFragment;
+import com.crashlytics.android.Crashlytics;
+
+import io.fabric.sdk.android.Fabric;
 
 
 public class NavigationActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -26,6 +29,7 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
 
         setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
@@ -35,7 +39,6 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
         navigationView.setNavigationItemSelectedListener(this);
 
         displaySelectedFragment(new PurchaseFragment());
-
 
     }
 
