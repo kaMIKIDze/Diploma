@@ -38,13 +38,15 @@
                     android:layout_weight="0.25"
                     android:text=""
                     android:textSize="12sp"
+                    android:gravity="center"
                     style="@style/Base.Widget.AppCompat.Button.Borderless"/>
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.04"
-                    android:text="-" />
+                    android:text="-"
+                    android:gravity="center"/>
 
                 <Button
                     android:id="@+id/time_end"
@@ -53,6 +55,7 @@
                     android:layout_weight="0.25"
                     android:text=""
                     android:textSize="12sp"
+                    android:gravity="center"
                     style="@style/Base.Widget.AppCompat.Button.Borderless"/>
 
             </LinearLayout>

@@ -2,13 +2,10 @@ package com.gromov.diploma.view.products;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatSpinner;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.gromov.diploma.R;
-
-import java.util.Objects;
 
 public class EditProductActivity extends ProductActivity {
 

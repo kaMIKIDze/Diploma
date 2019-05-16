@@ -58,4 +58,5 @@
     <string name="cancel">Отменить</string>
     <string name="unknown">Неизвестно</string>
     <string name="purchase">Продукты</string>
+    <string name="add_category">Добавление категории</string>
 </resources>

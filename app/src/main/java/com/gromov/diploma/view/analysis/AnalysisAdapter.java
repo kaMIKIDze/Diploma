@@ -15,6 +15,7 @@ import java.util.List;
 public class AnalysisAdapter extends RecyclerView.Adapter<AnalysisAdapter.ViewHolder> {
     private List<StatisticsByCategory> statistics;
     private List<Integer> colors;
+    private View v;
 
     public AnalysisAdapter(List<StatisticsByCategory> statistics, List<Integer> colors) {
         this.statistics = statistics;
@@ -24,7 +25,7 @@ public class AnalysisAdapter extends RecyclerView.Adapter<AnalysisAdapter.ViewHo
     @NonNull
     @Override
     public AnalysisAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View v = LayoutInflater.from(parent.getContext())
+        v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_legend, parent, false);
 
         return new AnalysisAdapter.ViewHolder(v);
@@ -41,24 +42,24 @@ public class AnalysisAdapter extends RecyclerView.Adapter<AnalysisAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-       private ImageView icon;
-       private TextView name;
-       private TextView cost;
+        private ImageView icon;
+        private TextView name;
+        private TextView cost;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            icon=itemView.findViewById(R.id.legend_icon);
-            name=itemView.findViewById(R.id.legend_item_name);
-            cost=itemView.findViewById(R.id.legend_item_cost);
+            icon = itemView.findViewById(R.id.legend_icon);
+            name = itemView.findViewById(R.id.legend_item_name);
+            cost = itemView.findViewById(R.id.legend_item_cost);
         }
 
-        void bind(final int pos){
+        void bind(final int pos) {
             final StatisticsByCategory statistic = statistics.get(pos);
             final Integer color = colors.get(pos);
             icon.setBackgroundColor(color);
             name.setText(statistic.getName());
-            cost.setText(String.valueOf(statistic.getCost()));
+            cost.setText(String.valueOf((int)statistic.getCost()) + " " + v.getContext().getString(R.string.currency_unit_rus));
         }
     }
 }

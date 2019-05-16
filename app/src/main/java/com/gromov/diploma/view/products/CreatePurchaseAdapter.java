@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.gromov.diploma.R;
-import com.gromov.diploma.data.database.entities.Category;
 import com.gromov.diploma.data.database.entities.Product;
 
 import java.util.List;

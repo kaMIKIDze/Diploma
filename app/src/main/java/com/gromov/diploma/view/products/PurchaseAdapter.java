@@ -1,5 +1,6 @@
 package com.gromov.diploma.view.products;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -60,12 +61,15 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.MyView
     }
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int pos) {
 
         Purchase purchase = purchases.get(pos);
         myViewHolder.textViewName.setText(purchase.getRetailPlaceAddress());
-        myViewHolder.textViewSum.setText(v.getContext().getString(R.string.total) + " " + String.valueOf(purchase.getEcashTotalSum() / 100));
+        myViewHolder.textViewSum.setText(v.getContext().getString(R.string.total) + " "
+                + String.valueOf(purchase.getEcashTotalSum() / 100)+" "
+                + v.getContext().getString(R.string.currency_unit_rus));
         DateFormat df = new SimpleDateFormat(v.getContext().getString(R.string.date_format));
         String reportDate = df.format(purchase.getCurrentTime());
 

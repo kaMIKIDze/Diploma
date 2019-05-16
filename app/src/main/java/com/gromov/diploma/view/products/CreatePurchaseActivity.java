@@ -1,6 +1,7 @@
 package com.gromov.diploma.view.products;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,16 +22,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.text.SpannableString;
 import android.text.format.DateUtils;
-import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -267,6 +265,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         itemTouchhelper.attachToRecyclerView(recyclerView);
     }
 
+    @SuppressLint("SetTextI18n")
     private void ActivityResultAdd(Intent data) {
         ProductInfo productInfo = data.getParcelableExtra("product");
         Product product = new Product(productInfo);
@@ -275,10 +274,11 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         for (int i = 0; i < products.size(); i++) {
             totalSum += products.get(i).getSum();
         }
-        purchaseTotalSum.setText(String.valueOf(totalSum / 100.0));
+        purchaseTotalSum.setText(String.valueOf(totalSum / 100.0) + " " + getString(R.string.currency_unit_rus));
         mAdapter.notifyDataSetChanged();
     }
 
+    @SuppressLint("SetTextI18n")
     private void ActivityResultFilePicker(Intent data) {
         String path = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
 
@@ -296,7 +296,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
             for (int i = 0; i < products.size(); i++) {
                 totalSum += products.get(i).getSum();
             }
-            purchaseTotalSum.setText(String.valueOf(totalSum / 100.0));
+            purchaseTotalSum.setText(String.valueOf(totalSum / 100.0) + " " + getString(R.string.currency_unit_rus));
             mAdapter.notifyDataSetChanged();
         }
     }

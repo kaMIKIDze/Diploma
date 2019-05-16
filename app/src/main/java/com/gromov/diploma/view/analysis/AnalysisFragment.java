@@ -1,7 +1,6 @@
 package com.gromov.diploma.view.analysis;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -57,7 +56,6 @@ public class AnalysisFragment extends Fragment {
     private DatePickerDialog.OnDateSetListener endDateSetListener;
 
 
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -102,7 +100,7 @@ public class AnalysisFragment extends Fragment {
     }
 
 
-    private void createDateSetListener(){
+    private void createDateSetListener() {
         // установка обработчика выбора даты
         beginDateSetListener = new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -157,9 +155,6 @@ public class AnalysisFragment extends Fragment {
     private void setColors(PieDataSet dataSet) {
         ArrayList<Integer> colors = new ArrayList<>();
 
-        for (int c : ColorTemplate.VORDIPLOM_COLORS)
-            colors.add(c);
-
         for (int c : ColorTemplate.JOYFUL_COLORS)
             colors.add(c);
 
@@ -170,6 +165,9 @@ public class AnalysisFragment extends Fragment {
             colors.add(c);
 
         for (int c : ColorTemplate.PASTEL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.VORDIPLOM_COLORS)
             colors.add(c);
 
         colors.add(ColorTemplate.getHoloBlue());
@@ -306,7 +304,6 @@ public class AnalysisFragment extends Fragment {
         setValues();
         adapter.notifyDataSetChanged();
     }
-
 
 
     public void initDatabase() {

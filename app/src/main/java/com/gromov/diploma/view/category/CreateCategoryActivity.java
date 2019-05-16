@@ -1,7 +1,8 @@
 package com.gromov.diploma.view.category;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,12 +13,13 @@ import com.gromov.diploma.data.async.AddCategoryAsyncTask;
 import com.gromov.diploma.data.database.database.DatabasePurchase;
 import com.gromov.diploma.data.database.entities.Category;
 
-public class CreateCategoryActivity extends Activity {
+public class CreateCategoryActivity extends AppCompatActivity {
 
     private Button saveBtn;
     private EditText nameCategory;
     private RadioButton required;
     private DatabasePurchase databasePurchase;
+    private Toolbar toolbar;
 
 
     @Override
@@ -30,6 +32,10 @@ public class CreateCategoryActivity extends Activity {
         required = findViewById(R.id.quantity_radio);
         required.setChecked(true);
         initDatabase();
+
+        toolbar = findViewById(R.id.toolbar_category);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.add_category);
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override

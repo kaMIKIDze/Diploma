@@ -8,4 +8,6 @@
     <color name="secondaryText">#757575</color>
     <color name="icons">#212121</color>
     <color name="divider">#BDBDBD</color>
+    <color name="colorPrimaryLightBlue">#bae7f4</color>
+    <color name="colorDeleteBackground">#b80f0a</color>
 </resources>
