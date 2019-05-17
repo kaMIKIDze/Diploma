@@ -34,12 +34,13 @@ public abstract class ProductActivity extends AppCompatActivity {
     protected ProductInfo productInfo;
     protected int idParentCategory;
 
+    private static final String ID_CATEGORY = "id_category";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_product);
-        idParentCategory = Integer.parseInt(Objects.requireNonNull(getIntent().getExtras().getString("id_category")));
+        idParentCategory = Integer.parseInt(Objects.requireNonNull(getIntent().getExtras().getString(ID_CATEGORY)));
 
         initDatabase();
         createViews();

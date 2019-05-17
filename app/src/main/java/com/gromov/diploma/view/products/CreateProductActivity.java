@@ -11,11 +11,14 @@ import java.util.Objects;
 
 public class CreateProductActivity extends ProductActivity {
 
+    private static final String PRODUCT = "product";
+    private static final String ID_SELECTED_ITEM_SPINNER = "id_selected_item_spinner";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        int idSpinner = Integer.parseInt(Objects.requireNonNull(Objects.requireNonNull(getIntent().getExtras()).getString("id_selected_item_spinner")));
+        int idSpinner = Integer.parseInt(Objects.requireNonNull(Objects.requireNonNull(getIntent().getExtras()).getString(ID_SELECTED_ITEM_SPINNER)));
         category.setSelection(idSpinner);//
         getSupportActionBar().setTitle(getString(R.string.add_product));
     }
@@ -43,7 +46,7 @@ public class CreateProductActivity extends ProductActivity {
 
                 super.onOptionsItemSelected(item);
                 Intent intent = new Intent();
-                intent.putExtra("product", productInfo);
+                intent.putExtra(PRODUCT, productInfo);
                 setResult(RESULT_OK, intent);
                 finish();
                 break;

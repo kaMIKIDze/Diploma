@@ -25,17 +25,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         CategoryViewHolder(View view) {
             super(view);
             categoryText = view.findViewById(R.id.text_card_category);
-
         }
 
     }
-
 
     @NonNull
     @Override
     public CategoryAdapter.CategoryViewHolder onCreateViewHolder(ViewGroup parent,
                                                                  int viewType) {
-        // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_category, parent, false);
 

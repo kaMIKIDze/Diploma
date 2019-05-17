@@ -57,6 +57,12 @@ public class CreatePurchaseActivity extends AppCompatActivity {
     final int REQUEST_CODE_EDIT = 2;
     private static final int FILE_PICKER_REQUEST_CODE = 3;
     private static final int PERMISSIONS_REQUEST_CODE = 0;
+    private static final String PRODUCT = "product";
+    private static final String CATEGORY = "category";
+    private static final String ID_CATEGORY = "id_category";
+    private static final String ID_SELECTED_ITEM_SPINNER = "id_selected_item_spinner";
+    private static final String FILE_PICKER_TITLE = "Менеджер файлов";
+    private static final String TOOLBAR_TITLE = "Создание покупки";
 
 
     private TextInputEditText placeName;
@@ -97,7 +103,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         embodySpinner();
         embodyRecyclerView();
         setClickListener();
-        getSupportActionBar().setTitle("Создание покупки");
+        getSupportActionBar().setTitle(TOOLBAR_TITLE);
     }
 
     private void createViews() {
@@ -144,9 +150,9 @@ public class CreatePurchaseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     Intent i = new Intent(CreatePurchaseActivity.this, CreateProductActivity.class);
-                    i.putExtra("category", String.valueOf(spinnerCategory.getSelectedItem()));
-                    i.putExtra("id_category", String.valueOf(getCategoryByName((String) spinnerCategory.getSelectedItem()).getId()));//индексы листа начинаются от 0, а в БД от 1
-                    i.putExtra("id_selected_item_spinner", String.valueOf(spinnerCategory.getSelectedItemId()));
+                    i.putExtra(CATEGORY, String.valueOf(spinnerCategory.getSelectedItem()));
+                    i.putExtra(ID_CATEGORY, String.valueOf(getCategoryByName((String) spinnerCategory.getSelectedItem()).getId()));//индексы листа начинаются от 0, а в БД от 1
+                    i.putExtra(ID_SELECTED_ITEM_SPINNER, String.valueOf(spinnerCategory.getSelectedItemId()));
                     startActivityForResult(i, REQUEST_CODE_ADD);
                 } catch (Exception e) {
                     Toast.makeText(CreatePurchaseActivity.this, getString(R.string.error_category),
@@ -206,8 +212,8 @@ public class CreatePurchaseActivity extends AppCompatActivity {
                 editedPosition = products.indexOf(item);
                 Intent i = new Intent(CreatePurchaseActivity.this, EditProductActivity.class);
                 ProductInfo productInfo = new ProductInfo(item);
-                i.putExtra("product", productInfo);
-                i.putExtra("id_category", String.valueOf(getCategoryByName((String) spinnerCategory.getSelectedItem()).getId()));
+                i.putExtra(PRODUCT, productInfo);
+                i.putExtra(ID_CATEGORY, String.valueOf(getCategoryByName((String) spinnerCategory.getSelectedItem()).getId()));
                 startActivityForResult(i, REQUEST_CODE_EDIT);
             }
         });
@@ -267,7 +273,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void ActivityResultAdd(Intent data) {
-        ProductInfo productInfo = data.getParcelableExtra("product");
+        ProductInfo productInfo = data.getParcelableExtra(PRODUCT);
         Product product = new Product(productInfo);
         products.add(product);
         totalSum = 0;
@@ -302,7 +308,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
     }
 
     private void ActivityResultEdit(Intent data) {
-        ProductInfo productInfo = data.getParcelableExtra("product");
+        ProductInfo productInfo = data.getParcelableExtra(PRODUCT);
         Product product = new Product(productInfo);
 
         products.set(editedPosition, product);
@@ -347,7 +353,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
                 .withRequestCode(FILE_PICKER_REQUEST_CODE)
                 .withFilter(Pattern.compile(".*\\.json$"))
                 .withHiddenFiles(true)
-                .withTitle("Sample title")
+                .withTitle(FILE_PICKER_TITLE)
                 .start();
     }
 

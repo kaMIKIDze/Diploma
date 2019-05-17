@@ -8,14 +8,15 @@ import android.widget.Toast;
 import com.gromov.diploma.R;
 
 public class EditProductActivity extends ProductActivity {
-
+    private static final String PRODUCT = "product";
+    private static final String TOOLBAR_TITLE = "Изменение продукта";
     private ProductInfo productInfoParent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        productInfoParent = getIntent().getParcelableExtra("product");
+        productInfoParent = getIntent().getParcelableExtra(PRODUCT);
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setTitle("Изменение продукта");
+        getSupportActionBar().setTitle(TOOLBAR_TITLE);
     }
 
 
@@ -48,8 +49,7 @@ public class EditProductActivity extends ProductActivity {
                 super.onOptionsItemSelected(item);
 
                 Intent intent = new Intent();
-                intent.putExtra("product", productInfo);
-                intent.putExtra("product_parent", productInfoParent);
+                intent.putExtra(PRODUCT, productInfo);
                 setResult(RESULT_OK, intent);
                 finish();
                 break;
