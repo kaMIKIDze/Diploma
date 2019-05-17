@@ -68,7 +68,7 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.MyView
         Purchase purchase = purchases.get(pos);
         myViewHolder.textViewName.setText(purchase.getRetailPlaceAddress());
         myViewHolder.textViewSum.setText(v.getContext().getString(R.string.total) + " "
-                + String.valueOf(purchase.getEcashTotalSum() / 100)+" "
+                + String.valueOf(purchase.getEcashTotalSum() / 100) + " "
                 + v.getContext().getString(R.string.currency_unit_rus));
         DateFormat df = new SimpleDateFormat(v.getContext().getString(R.string.date_format));
         String reportDate = df.format(purchase.getCurrentTime());
@@ -82,6 +82,8 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.MyView
 
     @Override
     public int getItemCount() {
-        return purchases.size();
+        if (purchases == null) return 0;
+        else
+            return purchases.size();
     }
 }
