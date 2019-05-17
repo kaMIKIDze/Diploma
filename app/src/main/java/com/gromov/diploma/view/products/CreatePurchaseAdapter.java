@@ -12,7 +12,7 @@ import com.gromov.diploma.data.database.entities.Product;
 
 import java.util.List;
 
-public class CreatePurchaseAdapter extends RecyclerView.Adapter<CreatePurchaseAdapter.MyViewHolder> {
+public class CreatePurchaseAdapter extends RecyclerView.Adapter<CreatePurchaseAdapter.ViewHolder> {
 
     private List<Product> products;
     private PurchaseAdapterClickListener listener;
@@ -23,19 +23,18 @@ public class CreatePurchaseAdapter extends RecyclerView.Adapter<CreatePurchaseAd
     }
 
 
-
     @NonNull
     @Override
-    public CreatePurchaseAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CreatePurchaseAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_create_purchase, parent, false);
 
 
-        return new CreatePurchaseAdapter.MyViewHolder(v);
+        return new CreatePurchaseAdapter.ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, final int pos) {
+    public void onBindViewHolder(@NonNull final ViewHolder myViewHolder, final int pos) {
         myViewHolder.bind(pos);
     }
 
@@ -46,14 +45,14 @@ public class CreatePurchaseAdapter extends RecyclerView.Adapter<CreatePurchaseAd
         return products.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView name;
         private TextView category;
         private TextView totalSum;
         private TextView sumAndQuantity;
 
-        MyViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name_product);
             category = itemView.findViewById(R.id.category_product);
@@ -61,7 +60,7 @@ public class CreatePurchaseAdapter extends RecyclerView.Adapter<CreatePurchaseAd
             sumAndQuantity = itemView.findViewById(R.id.sum_and_quantity);
         }
 
-        void bind(final int pos) {
+        void bind(int pos) {
             final Product product = products.get(pos);
 
             name.setText(product.getName());
@@ -72,7 +71,7 @@ public class CreatePurchaseAdapter extends RecyclerView.Adapter<CreatePurchaseAd
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemClick(product, pos);
+                    listener.onItemClick(product);
                 }
             });
         }
@@ -88,7 +87,7 @@ public class CreatePurchaseAdapter extends RecyclerView.Adapter<CreatePurchaseAd
     }
 
     void restoreItem(Product item, int position) {
-        products.add(position,item);
+        products.add(position, item);
         notifyItemInserted(position);
     }
 }

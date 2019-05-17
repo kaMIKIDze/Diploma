@@ -68,7 +68,7 @@ public class CreatePurchaseActivity extends AppCompatActivity {
     private AppCompatTextView purchaseTotalSum;
     private Calendar calendar = Calendar.getInstance();
     private double totalSum;
-    private int position;
+    private int editedPosition;
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private FloatingActionButton addProduct;
@@ -202,8 +202,8 @@ public class CreatePurchaseActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new CreatePurchaseAdapter(products, new PurchaseAdapterClickListener() {
             @Override
-            public void onItemClick(Product item, int pos) {
-                position = pos;
+            public void onItemClick(Product item) {
+                editedPosition = products.indexOf(item);
                 Intent i = new Intent(CreatePurchaseActivity.this, EditProductActivity.class);
                 ProductInfo productInfo = new ProductInfo(item);
                 i.putExtra("product", productInfo);
@@ -304,19 +304,19 @@ public class CreatePurchaseActivity extends AppCompatActivity {
     private void ActivityResultEdit(Intent data) {
         ProductInfo productInfo = data.getParcelableExtra("product");
         Product product = new Product(productInfo);
-        products.set(position, product);
+
+        products.set(editedPosition, product);
         totalSum = 0;
         for (int i = 0; i < products.size(); i++) {
             totalSum += products.get(i).getSum();
         }
         purchaseTotalSum.setText(String.valueOf(totalSum / 100.0));
-        mAdapter.notifyItemChanged(position);
+        mAdapter.notifyItemChanged(editedPosition);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.create_purchase_menu, menu);
-        //SpannableString s = new SpannableString("My red MenuItem"); s.setSpan(new ForegroundColorSpan(Color.RED), 0, s.length(), 0);
         return true;
     }
 

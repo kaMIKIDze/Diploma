@@ -17,7 +17,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.MyViewHolder> {
+public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.ViewHolder> {
 
     private List<Purchase> purchases;
     View v;
@@ -27,7 +27,7 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.MyView
         this.purchases = purchases;
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView textViewName;
         private TextView textViewSum;
@@ -38,7 +38,7 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.MyView
 
         private RecyclerView.LayoutManager layoutManager;
 
-        public MyViewHolder(View v) {
+        public ViewHolder(View v) {
             super(v);
             textViewName = v.findViewById(R.id.purchase_name_text);
             textViewSum = v.findViewById(R.id.purchase_sum_text);
@@ -52,18 +52,18 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.MyView
 
 
     @Override
-    public PurchaseAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
+    public PurchaseAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                            int viewType) {
         v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_purchase, parent, false);
 
-        return new MyViewHolder(v);
+        return new ViewHolder(v);
     }
 
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int pos) {
+    public void onBindViewHolder(@NonNull ViewHolder myViewHolder, int pos) {
 
         Purchase purchase = purchases.get(pos);
         myViewHolder.textViewName.setText(purchase.getRetailPlaceAddress());

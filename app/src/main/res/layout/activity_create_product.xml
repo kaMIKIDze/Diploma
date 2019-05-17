@@ -27,7 +27,8 @@
             android:id="@+id/product_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/product_name" />
+            android:hint="@string/product_name"
+            android:inputType="textNoSuggestions"/>
 
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"

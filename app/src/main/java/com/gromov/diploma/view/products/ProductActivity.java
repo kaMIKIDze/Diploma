@@ -133,7 +133,7 @@ public abstract class ProductActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save_product:
-                productInfo = new ProductInfo(String.valueOf(productName.getText()),
+                productInfo = new ProductInfo(String.valueOf(productName.getText()).trim(),
                         getCategoryByName(categories.get((int) category.getSelectedItemId()).getName()).getId(),
                         categories.get((int) category.getSelectedItemId()).getName(),
                         Double.parseDouble(String.valueOf(countProduct.getText())),

@@ -22,7 +22,7 @@ public class EditProductActivity extends ProductActivity {
     protected void setViews() {
         super.setViews();
 
-        productName.setText(productInfoParent.getName());
+        productName.setText(productInfoParent.getName().trim());
         category.setSelection(getIndex(productInfoParent.getCategoryName()));
         countProduct.setText(String.valueOf(productInfoParent.getCount()));
         costProduct.setText(String.valueOf(productInfoParent.getCost() / 100.0));

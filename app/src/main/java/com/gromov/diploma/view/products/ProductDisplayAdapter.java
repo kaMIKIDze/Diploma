@@ -12,7 +12,7 @@ import com.gromov.diploma.data.database.entities.Product;
 
 import java.util.List;
 
-public class ProductDisplayAdapter extends RecyclerView.Adapter<ProductDisplayAdapter.MyViewHolder> {
+public class ProductDisplayAdapter extends RecyclerView.Adapter<ProductDisplayAdapter.ViewHolder> {
 
     private List<Product> products;
     private final static int MAX_SIZE = 5;
@@ -25,14 +25,14 @@ public class ProductDisplayAdapter extends RecyclerView.Adapter<ProductDisplayAd
 
     @NonNull
     @Override
-    public ProductDisplayAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+    public ProductDisplayAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_product, parent, false);
-        return new MyViewHolder(v);
+        return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder myViewHolder, int i) {
         myViewHolder.textViewNameItems.setText(products.get(i).getName());
         myViewHolder.textViewPriceItems.setText(String.valueOf(products.get(i).getSum() / 100.0) + v.getContext().getString(R.string.currency_unit_rus));
         myViewHolder.textViewQuantityItems.setText(String.valueOf(products.get(i).getQuantity()));
@@ -45,12 +45,12 @@ public class ProductDisplayAdapter extends RecyclerView.Adapter<ProductDisplayAd
         else return MAX_SIZE;
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         private TextView textViewNameItems;
         private TextView textViewQuantityItems;
         private TextView textViewPriceItems;
 
-        MyViewHolder(@NonNull View v) {
+        ViewHolder(@NonNull View v) {
             super(v);
             textViewNameItems = v.findViewById(R.id.purchase_items_name_text);
             textViewQuantityItems = v.findViewById(R.id.purchase_items_quantity_text);

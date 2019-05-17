@@ -67,8 +67,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         return categories;
     }
 
-   void restoreItem(Category item, int position) {
-        categories.add(position,item);
+    void restoreItem(Category item, int position) {
+        categories.add(position, item);
         notifyItemInserted(position);
     }
 
