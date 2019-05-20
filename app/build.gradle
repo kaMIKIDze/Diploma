@@ -1,0 +1,77 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion compile_sdk
+    defaultConfig {
+
+        vectorDrawables.useSupportLibrary = true
+
+        applicationId "com.gromov.diploma"
+        minSdkVersion min_sdk
+        targetSdkVersion target_sdk
+        versionCode version_code
+        versionName version_name
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        // These docs use an open ended version so that our plugin
+        // can be updated quickly in response to Android tooling updates
+
+        // We recommend changing it to the latest version from our changelog:
+        // https://docs.fabric.io/android/changelog.html#fabric-gradle-plugin
+        classpath 'io.fabric.tools:gradle:1.29.0'
+    }
+}
+
+apply plugin: 'io.fabric'
+
+
+
+repositories {
+    maven {
+        url "http://dl.bintray.com/lukaville/maven"
+    }
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://maven.fabric.io/public' }
+}
+
+dependencies {
+
+
+    implementation "com.android.support:appcompat-v7:$supportLibVersion"
+    implementation "com.android.support:design:$supportLibVersion"
+    implementation "com.google.code.gson:gson:$gson_version"
+
+    implementation "com.github.PhilJay:MPAndroidChart:$MPChartVersion"
+
+
+    implementation "android.arch.persistence.room:runtime:$room_version"
+    annotationProcessor "android.arch.persistence.room:compiler:$room_version"
+
+    implementation "com.facebook.stetho:stetho:$stetho_version"
+
+    implementation('com.crashlytics.sdk.android:crashlytics:2.10.0@aar') {
+        transitive = true;
+    }
+
+    implementation "com.github.clans:fab:$fab_version"
+    implementation "com.nbsp:library:$nbsp_version"
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation "junit:junit:$junit_version"
+    androidTestImplementation "androidx.test:runner:$test_runner_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$test_espresso_version"
+}
